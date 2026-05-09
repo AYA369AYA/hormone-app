@@ -196,11 +196,12 @@ export default function HotelPage() {
           <div
             style={{
               marginTop: "34px",
-              padding: "26px",
-              borderRadius: "22px",
-              backgroundColor: "rgba(255,255,255,0.72)",
+              padding: "34px 26px",
+              borderRadius: "28px",
+              backgroundColor: "rgba(255,255,255,0.78)",
               lineHeight: "2",
               textAlign: "center",
+              boxShadow: "0 10px 40px rgba(80,60,40,0.10)",
             }}
           >
             <p
@@ -208,20 +209,106 @@ export default function HotelPage() {
                 fontSize: "13px",
                 letterSpacing: "2px",
                 color: "#7b6a58",
-                marginBottom: "18px",
+                marginBottom: "22px",
               }}
             >
               YOUR HORMONE INSIGHT
             </p>
 
+            <div
+              style={{
+                width: "180px",
+                height: "180px",
+                borderRadius: "50%",
+                margin: "0 auto 28px",
+                background:
+                  total >= 18
+                    ? "conic-gradient(#8f7761 0% 70%, #d8c9b7 70% 100%)"
+                    : total >= 10
+                    ? "conic-gradient(#b79b84 0% 50%, #e7ddd1 50% 100%)"
+                    : "conic-gradient(#cbb59f 0% 30%, #f1ebe4 30% 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 10px 30px rgba(80,60,40,0.12)",
+              }}
+            >
+              <div
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fffaf5",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "12px",
+                    letterSpacing: "2px",
+                    color: "#8a7865",
+                  }}
+                >
+                  BALANCE
+                </span>
+
+                <span
+                  style={{
+                    fontSize: "34px",
+                    color: "#2f2923",
+                  }}
+                >
+                  {Math.min(100, 100 - total * 3)}%
+                </span>
+              </div>
+            </div>
+
             <p
               style={{
                 fontSize: "16px",
                 color: "#4c4138",
+                marginBottom: "22px",
               }}
             >
               {resultText}
             </p>
+
+            <div
+              style={{
+                marginTop: "30px",
+                padding: "22px",
+                borderRadius: "20px",
+                backgroundColor: "rgba(247,243,236,0.9)",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "12px",
+                  letterSpacing: "2px",
+                  color: "#8a7865",
+                  marginBottom: "10px",
+                }}
+              >
+                RECOMMENDED EXPERIENCE
+              </p>
+
+              <p
+                style={{
+                  color: "#5a4d43",
+                  fontSize: "15px",
+                  lineHeight: "2",
+                }}
+              >
+                Hormone rhythm support /
+                adrenal recovery /
+                sensory relaxation /
+                restorative sleep /
+                feminine vitality care
+              </p>
+            </div>
           </div>
         )}
       </section>
@@ -257,3 +344,5 @@ export default function HotelPage() {
     </main>
   );
 }
+
+  
