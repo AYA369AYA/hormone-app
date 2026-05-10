@@ -9,21 +9,116 @@ export default function GeneralPage() {
     "気づくと寝落ちしている",
     "イライラや焦りが当たり前になっている",
     "以前より“ときめき”や余白を感じにくい",
+    "休んでいるのに疲労感が抜けにくい",
+    "甘いものやカフェインを欲しやすい",
+    "予定を詰め込んでいないと不安になる",
+    "人に気を遣いすぎてしまう",
+    "生理前に気分や体調が大きく揺れやすい",
+    "冷えやむくみを感じやすい",
+    "考え続けてしまい、頭が休まりにくい",
+    "頑張れば動けるので無理を続けてしまう",
+    "身体の痛みや緊張が抜けにくい",
+    "“私はこのままで大丈夫”と感じにくい",
   ];
 
   const [answers, setAnswers] = useState<number[]>(
     Array(questions.length).fill(0)
   );
+
   const [showResult, setShowResult] = useState(false);
 
   const total = answers.reduce((sum, value) => sum + value, 0);
 
-  const resultText =
-    total >= 18
-      ? "今のあなたの身体は、長く頑張ってきた分だけ、深い回復を求めているサインが見えます。身体を整えることは、不調を我慢することではなく、睡眠・感情・美しさの余白を取り戻していくことです。"
-      : total >= 10
-      ? "今のあなたは、日常を頑張れている一方で、内側では少しずつリズムの乱れや疲労のサインが出ているかもしれません。早めに身体の声を受け取ることが、10年先の健やかさと美しさにつながります。"
-      : "今のあなたは、比較的穏やかなリズムを保てている状態です。さらに深い回復力や女性らしい余白を育てるために、睡眠・ストレス・ホルモンリズムを丁寧に見つめていくことがおすすめです。";
+  let recoveryType = "";
+  let resultText = "";
+
+  if (total >= 50) {
+    recoveryType = "Adrenaline Driven Type";
+
+    resultText = `
+今のあなたは、
+“頑張ることで動けてしまう状態”
+が長く続いている可能性があります。
+
+その結果、
+
+・朝の疲労感
+・夕方のパワーダウン
+・寝落ち
+・イライラや不安感
+・甘いものやカフェインへの依存
+
+などが、
+“当たり前”になっているかもしれません。
+
+気づかないうちに、
+「動き続けること」で安心感を保ちながら、
+身体は静かな回復不足のサインを出している状態です。
+
+ホルモンバランスやストレスリズムを整えていくことで、
+
+・睡眠の質
+・感情の安定
+・エネルギーの余白
+・「私はこのままで大丈夫」と感じられる感覚
+
+は少しずつ変化していきます。
+
+本来の回復とは、
+「もっと頑張ること」ではなく、
+
+安心して休めること、
+深く呼吸できること、
+そして女性としての自然なリズムを取り戻していくことなのかもしれません。
+`;
+  } else if (total >= 35) {
+    recoveryType = "Silent Exhaustion Type";
+
+    resultText = `
+今のあなたは、
+日常を頑張れている一方で、
+身体の内側では少しずつ疲労や緊張が蓄積している可能性があります。
+
+一見問題なく動けていても、
+
+・寝ても回復しにくい
+・感情の波が大きくなる
+・余裕がなくなる
+・人に優しくしたいのに難しい
+
+などは、
+ホルモンバランスや神経系が
+“回復モード”へ入りにくくなっているサインかもしれません。
+
+身体を整えることは、
+単なる不調改善ではなく、
+
+安心感、
+女性らしい余白、
+そして自然体で過ごせる感覚を
+取り戻していくプロセスです。
+`;
+  } else {
+    recoveryType = "Rhythm Recovery Type";
+
+    resultText = `
+今のあなたは、
+比較的穏やかなリズムを保てている状態です。
+
+ただ、
+女性の身体は、
+ストレス・睡眠・感情・ホルモンバランスの影響をとても繊細に受けています。
+
+今ある感覚を大切にしながら、
+
+・深く眠れること
+・安心して力を抜けること
+・女性としての自然なリズムを保つこと
+
+を意識していくことで、
+さらに美しさや回復力の土台が育っていきます。
+`;
+  }
 
   return (
     <main
@@ -58,14 +153,14 @@ export default function GeneralPage() {
         <h1
           style={{
             fontSize: "40px",
-            lineHeight: "1.25",
+            lineHeight: "1.35",
             marginBottom: "24px",
             fontWeight: 400,
           }}
         >
-          今の身体のリズムを
+          今の身体感覚に
           <br />
-          静かに見つめる時間
+          意識を向けてみる
         </h1>
 
         <p
@@ -93,7 +188,7 @@ export default function GeneralPage() {
             letterSpacing: "1px",
           }}
         >
-          はじめる
+          チェックをはじめる
         </a>
       </section>
 
@@ -131,7 +226,7 @@ export default function GeneralPage() {
             marginBottom: "28px",
           }}
         >
-          いまのリズムチェック
+          今のリズムチェック
         </h2>
 
         {questions.map((question, index) => (
@@ -170,7 +265,8 @@ export default function GeneralPage() {
                     border: "1px solid #8a7865",
                     backgroundColor:
                       answers[index] === score ? "#2f2923" : "transparent",
-                    color: answers[index] === score ? "#fff" : "#2f2923",
+                    color:
+                      answers[index] === score ? "#fff" : "#2f2923",
                     fontFamily: "serif",
                     cursor: "pointer",
                   }}
@@ -209,60 +305,55 @@ export default function GeneralPage() {
               borderRadius: "28px",
               backgroundColor: "rgba(255,255,255,0.78)",
               lineHeight: "2",
-              textAlign: "center",
               boxShadow: "0 10px 40px rgba(80,60,40,0.10)",
             }}
           >
             <p
               style={{
+                textAlign: "center",
                 fontSize: "13px",
                 letterSpacing: "2px",
                 color: "#7b6a58",
-                marginBottom: "22px",
+                marginBottom: "18px",
               }}
             >
-              YOUR RHYTHM INSIGHT
+              HORMONE RECOVERY SCORE
+            </p>
+
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: "64px",
+                color: "#2f2923",
+                marginBottom: "8px",
+              }}
+            >
+              {Math.min(100, total * 2)}
+            </div>
+
+            <p
+              style={{
+                textAlign: "center",
+                color: "#8a7865",
+                marginBottom: "30px",
+                letterSpacing: "1px",
+              }}
+            >
+              {recoveryType}
             </p>
 
             <p
               style={{
-                fontSize: "16px",
+                whiteSpace: "pre-line",
                 color: "#4c4138",
-                marginBottom: "22px",
+                lineHeight: "2.2",
+                fontSize: "15px",
               }}
             >
               {resultText}
             </p>
           </div>
         )}
-      </section>
-
-      <section
-        style={{
-          maxWidth: "720px",
-          margin: "56px auto 0",
-          textAlign: "center",
-          color: "#6d5d50",
-          lineHeight: "2",
-          fontSize: "14px",
-        }}
-      >
-        <p>
-          このページは、書籍と連動したホルモンウェルネス体験の入口です。
-        </p>
-
-        <a
-          href="/"
-          style={{
-            display: "inline-block",
-            marginTop: "24px",
-            color: "#2f2923",
-            textDecoration: "none",
-            borderBottom: "1px solid #2f2923",
-          }}
-        >
-          トップへ戻る
-        </a>
       </section>
     </main>
   );
