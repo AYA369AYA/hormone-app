@@ -1,3 +1,7 @@
+import { normalizeSource } from "@/lib/source";
+import { AnalyticsEvent } from "./components/AnalyticsEvent";
+import { EmailSignupForm } from "./components/EmailSignupForm";
+
 const questions = [
   "朝起きても、すっきりした感じが少ない",
   "午前中、頭がぼんやりすることがある",
@@ -58,6 +62,7 @@ export default async function Page({
 }) {
   const params = await searchParams;
   const submitted = params.submitted === "true";
+  const source = normalizeSource(params.source);
 
   const answers = questions.map((_, i) => Number(params[`q${i}`] ?? 0));
   const score = answers.reduce((sum, v) => sum + v, 0);
@@ -115,6 +120,11 @@ export default async function Page({
     return (
       <main style={styles.main}>
         <div style={styles.card}>
+          <AnalyticsEvent
+            name="self_check_complete"
+            params={{ source, score, result_type: result.label }}
+          />
+
           <p style={styles.type}>{result.label}</p>
           <h1 style={styles.title}>{result.title}</h1>
 
@@ -188,9 +198,7 @@ export default async function Page({
             この状態については、本編で詳しく解説しています。
           </div>
 
-          <a href="/" style={styles.button}>
-            もう一度チェックする
-          </a>
+          <EmailSignupForm source={source} />
         </div>
       </main>
     );
@@ -199,6 +207,8 @@ export default async function Page({
   return (
     <main style={styles.main}>
       <div style={styles.card}>
+        <AnalyticsEvent name="self_check_start" params={{ source }} />
+
         <p style={styles.intro}>
           これは、今のご自身の内側のリズムに気づくための静かな体験です。
           <br />
@@ -209,6 +219,7 @@ export default async function Page({
 
         <form method="get" action="/">
           <input type="hidden" name="submitted" value="true" />
+          <input type="hidden" name="source" value={source} />
 
           {questions.map((q, i) => (
             <div key={i} style={styles.qCard}>
