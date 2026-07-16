@@ -44,15 +44,6 @@ export default async function JourneyVideoPage({
         />
 
         <TestimonialVideo
-          id="c1-saliva-test-reveal"
-          source={source}
-          lead="10年間、更年期対策のジェルを使い続けていた方が、ケアを始める際に受けた唾液ホルモン検査。そこで分かった、意外な事実とは。"
-          heading="体感だけでは分からない、今のホルモンの現在地。"
-          src="/videos/journey/c1-saliva-test-reveal.mp4"
-          poster="/videos/journey/posters/c1.jpg"
-        />
-
-        <TestimonialVideo
           id="c4-multi-symptom-connection"
           source={source}
           lead="デリケートゾーンの不調や手の湿疹など、気になる症状について話している場面です。"
