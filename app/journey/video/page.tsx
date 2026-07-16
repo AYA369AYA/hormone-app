@@ -2,6 +2,7 @@ import { normalizeSource } from "@/lib/source";
 import { getJourneyConfig } from "@/lib/journeyConfig";
 import { AnalyticsEvent } from "@/app/components/AnalyticsEvent";
 import { SalivaTestCta } from "@/app/components/SalivaTestCta";
+import { TestimonialVideo } from "@/app/components/TestimonialVideo";
 
 export default async function JourneyVideoPage({
   searchParams,
@@ -32,6 +33,33 @@ export default async function JourneyVideoPage({
         ) : (
           <div style={styles.videoPlaceholder}>動画は準備中です。</div>
         )}
+
+        <TestimonialVideo
+          id="a1-estrogen-myth"
+          source={source}
+          lead="更年期の症状が気になり相談された方の、実際のお話です。"
+          heading="女性ホルモンが足りないと思っていた。でも、実際は違った。"
+          src="/videos/journey/a1-estrogen-myth.mp4"
+          poster="/videos/journey/posters/a1.jpg"
+        />
+
+        <TestimonialVideo
+          id="c1-saliva-test-reveal"
+          source={source}
+          lead="10年間、更年期対策のジェルを使い続けていた方が、ケアを始める際に受けた唾液ホルモン検査。そこで分かった、意外な事実とは。"
+          heading="体感だけでは分からない、今のホルモンの現在地。"
+          src="/videos/journey/c1-saliva-test-reveal.mp4"
+          poster="/videos/journey/posters/c1.jpg"
+        />
+
+        <TestimonialVideo
+          id="c4-multi-symptom-connection"
+          source={source}
+          lead="デリケートゾーンの不調や手の湿疹など、気になる症状について話している場面です。"
+          heading="一見別々に見える症状も、カラダの中ではつながっていることがあります。"
+          src="/videos/journey/c4-multi-symptom-connection.mp4"
+          poster="/videos/journey/posters/c4.jpg"
+        />
 
         <SalivaTestCta
           source={source}
