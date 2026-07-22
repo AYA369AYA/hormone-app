@@ -134,6 +134,15 @@ function OrganShape({ organ }: { organ: HiOrgan }): ReactNode {
           <circle cx="118" cy="60" r="16" />
         </g>
       );
+    case "hypothalamus":
+      // Visual Language v2: small, simple, deliberately subordinate to
+      // brain's shape (it's a structure within/below the brain) — a soft
+      // ellipse, not a full organ silhouette of its own.
+      return <ellipse cx="80" cy="60" rx="26" ry="20" fill={hiOrganColor.hypothalamus} />;
+    case "pituitary":
+      // Smaller still than hypothalamus, consistent with its real relative
+      // size and its position later in the HPA cascade.
+      return <ellipse cx="80" cy="60" rx="19" ry="16" fill={hiOrganColor.pituitary} />;
     default:
       return null;
   }

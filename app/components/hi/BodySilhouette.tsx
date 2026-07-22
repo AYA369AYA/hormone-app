@@ -37,6 +37,12 @@ export const BODY_CENTER_X = VIEWBOX_WIDTH / 2;
  */
 export const BODY_REGIONS: Record<HiOrgan, { x: number; y: number }> = {
   brain: { x: BODY_CENTER_X, y: 26 },
+  // Hypothalamus and pituitary sit just below the brain, close together —
+  // real relative position, kept close since body-silhouette placement is
+  // a secondary use for these two (their primary home is MechanismDiagram's
+  // fixed vertical layout, not free positioning on the body).
+  hypothalamus: { x: BODY_CENTER_X, y: 33 },
+  pituitary: { x: BODY_CENTER_X, y: 38 },
   adrenal: { x: BODY_CENTER_X, y: 118 },
   liver: { x: BODY_CENTER_X + 20, y: 132 },
   gut: { x: BODY_CENTER_X, y: 155 },

@@ -56,7 +56,20 @@ export const hiSurface = {
 // hue. Adrenal keeps the anchor gold outright.
 // ---------------------------------------------------------------------------
 
-export type HiOrgan = "adrenal" | "brain" | "ovaries" | "liver" | "gut" | "bone";
+// Visual Language v2 (see Art Direction Guide §5): hypothalamus and
+// pituitary added for mechanism/cascade scenes (e.g. the HPA axis). Their
+// values sit deliberately between brain (palest) and adrenal (full gold)
+// so the colour progression itself teaches the cascade's direction and
+// intensity, independent of labels.
+export type HiOrgan =
+  | "adrenal"
+  | "brain"
+  | "ovaries"
+  | "liver"
+  | "gut"
+  | "bone"
+  | "hypothalamus"
+  | "pituitary";
 
 export const hiOrganColor: Record<HiOrgan, string> = {
   adrenal: hiColor.gold,
@@ -65,6 +78,8 @@ export const hiOrganColor: Record<HiOrgan, string> = {
   liver: "#B08348",
   gut: "#D0A578",
   bone: "#EDE6D6",
+  hypothalamus: "#DCC9A8",
+  pituitary: "#D4B98C",
 };
 
 export const hiOrganLabelJa: Record<HiOrgan, string> = {
@@ -74,6 +89,20 @@ export const hiOrganLabelJa: Record<HiOrgan, string> = {
   liver: "肝臓",
   gut: "腸",
   bone: "骨",
+  hypothalamus: "視床下部",
+  pituitary: "下垂体",
+};
+
+/** English labels — Visual Language v2 principle: viewer should follow the mechanism even muted. Bilingual labels are the primary carrier of that, alongside the arrows/layout. */
+export const hiOrganLabelEn: Record<HiOrgan, string> = {
+  adrenal: "Adrenal glands",
+  brain: "Brain",
+  ovaries: "Ovaries",
+  liver: "Liver",
+  gut: "Gut",
+  bone: "Bone",
+  hypothalamus: "Hypothalamus",
+  pituitary: "Pituitary",
 };
 
 // ---------------------------------------------------------------------------
