@@ -1,6 +1,7 @@
 import { normalizeSource } from "@/lib/source";
 import { AnalyticsEvent } from "./components/AnalyticsEvent";
 import { EmailSignupForm } from "./components/EmailSignupForm";
+import { GuidedExperienceCta } from "./components/GuidedExperienceCta";
 
 const questions = [
   "朝起きても、すっきりした感じが少ない",
@@ -62,6 +63,7 @@ export default async function Page({
 }) {
   const params = await searchParams;
   const submitted = params.submitted === "true";
+  const started = params.started === "true";
   const source = normalizeSource(params.source);
 
   const answers = questions.map((_, i) => Number(params[`q${i}`] ?? 0));
@@ -71,48 +73,32 @@ export default async function Page({
   const hasDeepPattern = deepScore >= 2;
 
   let result = {
-    label: "バランス安定タイプ",
-    summary: "今は、回復と消耗のバランスが比較的保たれている状態です。",
-    title: "今のあなたは、自然に整う流れの中にいます",
-    body: `現在のあなたは、無理なくバランスが保たれている状態にあります。
-
-日々の中で大きな不調を感じることが少ないのは、身体のリズムが自然に整っているサインです。
-
-ただし、この状態は「完成」ではなく、環境やストレスによって変化する繊細なバランスでもあります。
-
-整っているときほど、小さな違和感に気づくことが、これからの余白を守ります。`,
-    cta: "今の状態を保ちながら、さらに整えたい方へ",
+    label: "🟢 バランスが保たれている",
+    title: "今のあなたは、回復と活動のバランスが保たれています。",
+    summary: "現在の回答からは、身体が自然なリズムで働いている状態が見えています。",
+    body: `この良い状態を保つためにも、小さな変化に気づくことが未来の健康につながります。`,
+    cta: "今の心地よさを、さらに大切にしたい方へ",
   };
 
   if (score >= 15 && score < 30) {
     result = {
-      label: "エネルギー揺らぎタイプ",
-      summary: "日常はこなせていても、少しずつエネルギーを使い続けている状態です。",
-      title: "バランスを保つために、少し頑張りすぎている状態です",
-      body: `今のあなたは、日常を保つために少しエネルギーを使いながら、バランスをとっている状態です。
-
-朝の重さや、夕方の疲れ、甘いものやカフェインへの欲求は、身体が少し無理をしているときに出やすいサインです。
-
-この段階で気づけることが、回復に戻る自然な入口になります。
-
-少し力を抜くことで、身体はより自然に整い始めます。`,
-      cta: "今の違和感の正体を、もう少しはっきり知りたい方へ",
+      label: "🟡 エネルギーが揺らいでいる",
+      title: "今のあなたは、身体が頑張ってバランスを保っています。",
+      summary: "朝の重さや、夕方の眠気・身体のだるさは、身体からの小さなサインです。",
+      body: `今のうちに身体の現在地を知ることが、未来の不調を防ぐ第一歩になります。`,
+      cta: "この違和感の理由を、もう少し知りたい方へ",
     };
   }
 
   if (score >= 30) {
     result = {
-      label: "エネルギー消耗タイプ",
-      summary: "頑張りや気力で日常を支え、回復より消耗が先行している状態です。",
-      title: "今は、整えるよりも“満たす”ことが必要な状態です",
-      body: `現在のあなたは、エネルギーが先に消耗している状態にあります。
+      label: "🔴 エネルギーが消耗している",
+      title: "今のあなたは、身体が回復を必要としています。",
+      summary: "疲れが抜けない、朝起きづらい、休んでも回復した感じがしない。",
+      body: `そのような変化は、身体が回復よりも日常を乗り切ることを優先しているサインです。
 
-疲れが抜けにくい、何をしても回復しにくいと感じる場合、身体は回復のサインを出しています。
-
-この状態では、休んでいても身体がゆるみきらず、回復している感覚が得られにくくなることがあります。
-
-今は整えるよりも、まずエネルギーを満たすことが大切な段階です。`,
-      cta: "一度しっかり回復の方向に整えたい方へ",
+まずは、身体の現在地を知ることから始めましょう。`,
+      cta: "一度しっかり、身体を満たす方向へ向きたい方へ",
     };
   }
 
@@ -134,21 +120,15 @@ export default async function Page({
 
           <div style={styles.noteBox}>
             <p>
-              もし「そこまで当てはまらない」と感じた場合でも、不調がないというよりも、
-              身体のサインを感じにくくなっている状態の可能性もあります。
+              この結果は、良い・悪いを判断するものではありません。
             </p>
             <p>
-              身体は本来、とても繊細に変化を伝えています。
-            </p>
-          </div>
-
-          <div style={styles.noteBox}>
-            <p>
-              また、今回の結果は体感をもとにした状態であり、
-              身体の状態は必ずしも体感と一致するとは限りません。
+              あなたの身体の現在地を知る、
+              <br />
+              最初の一歩です。
             </p>
             <p>
-              実際には、数値として見ることで初めて気づく変化も多く存在します。
+              身体を知ることは、自分を知ること。
             </p>
           </div>
 
@@ -163,20 +143,20 @@ export default async function Page({
             {hasDeepPattern ? (
               <>
                 <p>
-                  休むことに違和感があったり、頑張っている方が安心する感覚があるとき、
-                  身体は無意識にエネルギーを使い続ける方向に傾いています。
+                  休むことに違和感があったり、頑張っている方が安心する。
+                  そんな感覚があるとき、身体は無意識にがんばり続けています。
                 </p>
                 <p>
-                  それは意志ではなく、これまでの経験の中で身についた身体の反応かもしれません。
+                  それは意志の弱さではなく、これまでの経験の中で身についた身体の反応です。
                 </p>
                 <p>
-                  このパターンに気づくことが、本来のリズムへ戻る大切な一歩になります。
+                  気づくことが、本来のリズムに戻る一歩になります。
                 </p>
               </>
             ) : (
               <>
                 <p>
-                  現在は、無意識にエネルギーを使い続けるような深いパターンは強く見られていません。
+                  今は、無意識にがんばり続けるような傾向は強く見られていません。
                 </p>
                 <p>
                   自然に力を抜ける感覚は、回復しやすい身体の土台になります。
@@ -188,17 +168,64 @@ export default async function Page({
           <div style={styles.cta}>
             <p>{result.cta}</p>
             <p>
-              唾液ホルモン検査では、プロゲステロンとエストロゲンのバランスや、
-              コルチゾールのリズムを確認しながら、
-              今の体の状態と日常のエネルギーの使い方をつなげて見ていくことができます。
+              唾液女性ホルモン検査では、ホルモンの状態を確認しながら、
+              今の身体をもう少し詳しく知ることができます。
             </p>
           </div>
 
-          <div style={styles.bookBox}>
-            この状態については、本編で詳しく解説しています。
-          </div>
+          <a
+            href={`/journey/video?source=${source}`}
+            style={styles.bookBox}
+          >
+            <p style={styles.bookBoxSign}>ここでご紹介したのは、身体からのサインです。</p>
+            <p style={styles.bookBoxNext}>身体では今、何が起こっているのでしょうか？</p>
+            <p style={styles.bookBoxBody}>
+              イライラや疲労感、睡眠のお悩み、PMS、朝すっきり起きられない、
+              食欲がないなど、日々感じている身体の変化を、
+              唾液ホルモン検査で数値とともに詳しく確認します。
+            </p>
+            <p style={styles.bookBoxNext}>唾液ホルモン検査・解説セッションを見る</p>
+          </a>
 
-          <EmailSignupForm source={source} />
+          <EmailSignupForm
+            source={source}
+            redirectTo={`/journey/video?source=${source}`}
+          />
+
+          <GuidedExperienceCta source={source} />
+        </div>
+      </main>
+    );
+  }
+
+  if (!started) {
+    return (
+      <main style={styles.main}>
+        <div style={styles.card}>
+          <AnalyticsEvent name="landing_view" params={{ source }} />
+
+          <p style={styles.kicker}>あなた自身のための時間。</p>
+
+          <h1 style={styles.header}>
+            今の身体を知る
+            <br />
+            ところから。
+          </h1>
+
+          <p style={styles.intro}>
+            今の不調を、症状だけで終わらせない。
+            <br />
+            約1分で、あなたのホルモンとストレスの
+            <br />
+            現在地をチェック。
+          </p>
+
+          <a
+            href={`/?started=true&source=${source}`}
+            style={styles.button}
+          >
+            セルフテストを始める
+          </a>
         </div>
       </main>
     );
@@ -208,12 +235,6 @@ export default async function Page({
     <main style={styles.main}>
       <div style={styles.card}>
         <AnalyticsEvent name="self_check_start" params={{ source }} />
-
-        <p style={styles.intro}>
-          これは、今のご自身の内側のリズムに気づくための静かな体験です。
-          <br />
-          このチェックは約1分で完了します。
-        </p>
 
         <h1 style={styles.header}>ホルモンバランスチェック</h1>
 
@@ -262,6 +283,12 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 28,
     borderRadius: 24,
     boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
+  },
+  kicker: {
+    fontSize: 12,
+    letterSpacing: "0.14em",
+    color: "#A08F7E",
+    marginBottom: 10,
   },
   intro: {
     marginBottom: 20,
@@ -359,11 +386,25 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.8,
   },
   bookBox: {
+    display: "block",
     marginTop: 16,
     padding: 16,
     borderRadius: 14,
     background: "#FFFFFF",
     border: "1px solid rgba(198,169,107,0.35)",
     lineHeight: 1.8,
+    textDecoration: "none",
+    color: "#2C2A28",
+  },
+  bookBoxSign: {
+    color: "#5A534D",
+  },
+  bookBoxNext: {
+    marginTop: 6,
+    fontWeight: 600,
+  },
+  bookBoxBody: {
+    marginTop: 10,
+    color: "#5A534D",
   },
 };

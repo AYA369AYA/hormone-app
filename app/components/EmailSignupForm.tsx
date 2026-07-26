@@ -7,10 +7,24 @@ import type { Source } from "@/lib/source";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function EmailSignupForm({ source }: { source: Source }) {
+export function EmailSignupForm({
+  source,
+  redirectTo,
+  label,
+  placeholder,
+  buttonLabel,
+  successMessage,
+}: {
+  source: Source;
+  redirectTo?: string;
+  label?: string;
+  placeholder?: string;
+  buttonLabel?: string;
+  successMessage?: string;
+}) {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "error" | "success">("idle");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,16 +49,30 @@ export function EmailSignupForm({ source }: { source: Source }) {
       }
 
       trackEvent("email_registration", { source });
-      router.push(`/journey/video?source=${encodeURIComponent(source)}`);
+
+      if (redirectTo) {
+        router.push(redirectTo);
+      } else {
+        setStatus("success");
+      }
     } catch {
       setStatus("error");
     }
   }
 
+  if (status === "success") {
+    return (
+      <p style={styles.success}>
+        {successMessage ??
+          "ご登録ありがとうございます。Hormone Intelligenceを学べるメールを、これから順にお届けします。"}
+      </p>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
       <label style={styles.label} htmlFor="email">
-        結果の詳しい解説を、メールで受け取りませんか？
+        {label ?? "結果の詳しい解説を、メールで受け取りませんか？"}
       </label>
       <input
         id="email"
@@ -52,11 +80,11 @@ export function EmailSignupForm({ source }: { source: Source }) {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@example.com"
+        placeholder={placeholder ?? "you@example.com"}
         style={styles.input}
       />
       <button type="submit" disabled={status === "submitting"} style={styles.button}>
-        {status === "submitting" ? "送信中..." : "解説を受け取る"}
+        {status === "submitting" ? "送信中..." : (buttonLabel ?? "解説を受け取る")}
       </button>
       {status === "error" && (
         <p style={styles.error}>
@@ -91,4 +119,5 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   error: { marginTop: 10, color: "#B3453B" },
+  success: { marginTop: 24, lineHeight: 1.8, color: "#5A534D", whiteSpace: "pre-line" },
 };

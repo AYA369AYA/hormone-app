@@ -4,37 +4,39 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { hiColor } from "../components/hi/tokens";
 import { usePrefersReducedMotion } from "../components/hi/OrganNode";
 import { MechanismDiagram } from "../components/hi/MechanismDiagram";
-import { HormoneGraph } from "../components/hi/HormoneGraph";
-import { LabReportCard } from "../components/hi/LabReportCard";
-import { CauseEffectConnector } from "../components/hi/CauseEffectConnector";
 
 /**
- * Scene 02 — Adrenal mechanism. [0:39–1:29 in CG Storyboard v1.0, 50s]
- * Rebuilt under Visual Language v2 (scientific visual storytelling).
+ * Scene 02 — HPA-axis mechanism. [0:39–1:29 in Master Script v1.0 §2, real
+ * narration length 49.95s]
  *
- * Scientific question this scene answers: "How does cortisol normally
- * work, and what happens when that rhythm changes?" Structured as three
- * acts, each teaching one part of that answer, cross-fading on the same
- * stage rather than scattering elements across the frame:
+ * Scientific question this scene answers, and only this: "How does the
+ * HPA axis normally produce cortisol?" Per the one-scene-one-question
+ * rule, the circadian graph and lab report (§3's content, [1:29–2:15])
+ * do not appear here — they belong to Scene 03, which should open with
+ * the circadian graph and transition into the report/symptom
+ * correlation, matching where their narration actually begins.
  *
- *   Act 1 (mechanism)   — MechanismDiagram: brain → hypothalamus →
- *                          pituitary → adrenal, labeled, sequenced.
- *   Act 2 (normal output) — HormoneGraph: the circadian curve this
- *                          mechanism produces when working normally.
- *   Act 3 (what changes) — LabReportCard + CauseEffectConnector: a real
- *                          report shape showing the flagged low AM
- *                          value, connected explicitly to a symptom.
+ * Audio: public/audio/hi/scene02-narration.m4a — the real §2 narration,
+ * trimmed at genuine silence boundaries (verified against amplitude, not
+ * just ASR — see commit notes) starting 39.55s into the source
+ * recording (0.53s natural lead-in silence baked into the file) and
+ * ending at the natural pause before §3 begins. Every timing constant
+ * below is derived from this file, not invented: cue boundaries were
+ * anchored to the two strongest verified landmarks (real speech onset,
+ * and the 1.4s pivot pause between "…出るんですけれども" and "多くの方
+ * でその段階を過ぎて") and proportioned by character count between them.
+ * This is a first, well-reasoned pass for your review — not a locked
+ * final sync.
  *
- * All data (report rows, graph points) is a plain array passed as props —
- * built so real anonymized clinical reports can replace the sample values
- * later without touching this file's layout.
- *
- * Inherits Scene 01's frame, timing philosophy, subtitle behavior, and
- * accessibility pattern (SCENE_REFERENCE.md). Master Script v1.0 §2 text
- * unchanged and verbatim — only the visuals were rebuilt.
+ * MechanismDiagram runs in controlled mode (activeIndex prop) rather
+ * than its own internal timer, so this scene's elapsed clock — not the
+ * component's default loop — drives which organ is highlighted,
+ * matching the narration's real pacing.
  */
 
-const SCENE_DURATION_S = 50;
+const SCENE_DURATION_S = 51.5; // 49.95s of narration + ~1.5s silent visual exit
+const NARRATION_END_S = 49.95;
+const EXIT_START = NARRATION_END_S;
 
 interface SubtitleCue {
   text: string;
@@ -42,61 +44,43 @@ interface SubtitleCue {
   end: number;
 }
 
+// Verbatim Master Script §2. Timings are real-audio-derived (see file
+// header) — not the invented placeholder timings from the previous cut.
 const SUBTITLES: SubtitleCue[] = [
-  { start: 4.0, end: 7.9, text: "そういったサインが出ている時の@@多くのケースで" },
-  { start: 7.9, end: 11.8, text: "今見ていただいているように@@唾液副腎ストレス検査では" },
-  { start: 11.8, end: 15.7, text: "副腎というホルモンで作られる@@コルチゾールというホルモンが" },
-  { start: 15.7, end: 19.6, text: "本来ですと何かストレスに@@対応するために" },
-  { start: 19.6, end: 23.5, text: "たくさん作ることで代償的に" },
-  { start: 23.5, end: 27.4, text: "あるいは体内のストレスに@@対応するために" },
-  { start: 27.4, end: 31.3, text: "たくさん作られて@@コルチゾール高値が出るんですけれども" },
-  { start: 31.3, end: 35.2, text: "多くの方でその段階を過ぎて" },
-  { start: 35.2, end: 39.1, text: "ストレス期間が@@長く続きすぎて" },
-  { start: 39.1, end: 43.0, text: "コルチゾールというホルモンそのものが@@副腎で作れなくなってしまっている状態" },
-  { start: 43.0, end: 46.75, text: "つまりコルチゾールが低値ローという@@状態が出ている方っていうのが@@とっても多いです" },
+  { start: 0.55, end: 4.85, text: "そういったサインが出ている時の@@多くのケースで" },
+  { start: 4.85, end: 10.35, text: "今見ていただいているように@@唾液副腎ストレス検査では" },
+  { start: 10.35, end: 15.35, text: "副腎というホルモンで作られる@@コルチゾールというホルモンが" },
+  { start: 15.35, end: 19.35, text: "本来ですと何かストレスに@@対応するために" },
+  { start: 19.35, end: 21.6, text: "たくさん作ることで代償的に" },
+  { start: 21.6, end: 25.4, text: "あるいは体内のストレスに@@対応するために" },
+  { start: 25.4, end: 30.45, text: "たくさん作られて@@コルチゾール高値が出るんですけれども" },
+  { start: 30.45, end: 33.35, text: "多くの方でその段階を過ぎて" },
+  { start: 33.35, end: 35.75, text: "ストレス期間が@@長く続きすぎて" },
+  { start: 35.75, end: 42.55, text: "コルチゾールというホルモンそのものが@@副腎で作れなくなってしまっている状態" },
+  { start: 42.55, end: 49.95, text: "つまりコルチゾールが低値ローという@@状態が出ている方っていうのが@@とっても多いです" },
 ];
 
 const FULL_TRANSCRIPT =
   "そういったサインが出ている時の多くのケースで、今見ていただいているように唾液副腎ストレス検査では、副腎というホルモンで作られるコルチゾールというホルモンが、本来ですと何かストレスに対応するためにたくさん作ることで代償的に、あるいは体内のストレスに対して対応するためにたくさん作られて、コルチゾール高値が出るんですけれども、多くの方でその段階を過ぎて、ストレス期間が長く続きすぎて、コルチゾールというホルモンそのものが副腎で作れなくなってしまっている状態、つまりコルチゾールが低値ローという状態が出ている方っていうのがとっても多いです。";
 
-// Act timing, in seconds from scene start. Overlapping windows crossfade.
-const ACT1_START = 3.5;
-const ACT1_FADE_OUT_START = 15.5;
-const ACT1_END = 16.5;
-const ACT2_START = 15.5;
-const ACT2_FADE_OUT_START = 33.0;
-const ACT2_END = 34.0;
-const ACT3_START = 33.0;
-const EXIT_START = 46.75;
+// Which MechanismDiagram step is highlighted, in seconds from scene
+// start — content-anchored, not evenly spaced: the narration spends most
+// of its time describing what happens at the adrenal gland (production,
+// then depletion), so the adrenal step owns the back half of the scene.
+// (brain is the implicit index-0 state before STEP_HYPOTHALAMUS_START)
+const STEP_HYPOTHALAMUS_START = 10.35; // "副腎というホルモンで作られる…"
+const STEP_PITUITARY_START = 19.35; // "たくさん作ることで代償的に…"
+const STEP_ADRENAL_START = 25.4; // "たくさん作られてコルチゾール高値が出る…"
 
-const GRAPH_IDEAL = [
-  { label: "起床時", value: 0.9 },
-  { label: "午前", value: 0.7 },
-  { label: "午後", value: 0.55 },
-  { label: "夕方", value: 0.4 },
-  { label: "夜", value: 0.25 },
-];
-const GRAPH_ACTUAL = [
-  { label: "起床時", value: 0.25 },
-  { label: "午前", value: 0.3 },
-  { label: "午後", value: 0.4 },
-  { label: "夕方", value: 0.25 },
-  { label: "夜", value: 0.18 },
-];
+// Adrenal state swap: stays healthy through the "high production"
+// narration (cue 7), then switches to depleted partway through "長く続
+// きすぎて…作れなくなってしまっている状態" (cue 9/10) as exhaustion is
+// described — OrganNode's state model is discrete, so this is a single
+// swap rather than a continuous fade, timed to land mid-sentence rather
+// than at a cue boundary so it doesn't read as a hard cut.
+const DIM_AT = 39.0;
 
-const REPORT_ROWS = [
-  { name: "コルチゾール（起床時）", value: "3.2 nmol/L", range: "基準値 8.0–20.0", flagged: true },
-  { name: "コルチゾール（正午）", value: "6.1 nmol/L", range: "基準値 3.0–8.0", flagged: false },
-  { name: "コルチゾール（夕方）", value: "2.4 nmol/L", range: "基準値 1.0–3.0", flagged: false },
-  { name: "コルチゾール（就寝前）", value: "0.9 nmol/L", range: "基準値 0.5–1.5", flagged: false },
-];
-
-function fadeWindow(elapsed: number, start: number, fadeOutStart: number, end: number): number {
-  if (elapsed < start || elapsed >= end) return 0;
-  const fadeIn = Math.min(1, (elapsed - start) / 0.9);
-  const fadeOut = Math.min(1, (end - elapsed) / Math.max(0.9, end - fadeOutStart));
-  return Math.min(fadeIn, fadeOut);
-}
+const MECHANISM_STEPS = [{ organ: "brain" }, { organ: "hypothalamus" }, { organ: "pituitary" }, { organ: "adrenal" }] as const;
 
 type PlayState = "idle" | "playing" | "done";
 
@@ -106,6 +90,7 @@ export function Scene02() {
   const [elapsed, setElapsed] = useState(0);
   const startRef = useRef<number | null>(null);
   const frameRef = useRef<number | undefined>(undefined);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (playState !== "playing") return;
@@ -129,40 +114,39 @@ export function Scene02() {
   const play = () => {
     setElapsed(0);
     setPlayState("playing");
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = 0;
+      // Gated by this click, not autoplay — satisfies browser autoplay
+      // policy, which only blocks playback started without a user gesture.
+      void audio.play();
+    }
   };
 
-  // Reduced motion / static: every act shown at once, stacked and fully
-  // legible, no animation — the diagram, graph, and report should tell
-  // the same story without motion, per Visual Language v2 principle 2.
+  const adrenalVitality: "healthy" | "depleted" = elapsed < DIM_AT ? "healthy" : "depleted";
+  const steps = MECHANISM_STEPS.map((s) => (s.organ === "adrenal" ? { ...s, vitality: adrenalVitality } : s));
+
+  const audioEl = <audio ref={audioRef} src="/audio/hi/scene02-narration.m4a" preload="auto" />;
+
+  // Reduced motion / static: full diagram at its end-state, transcript
+  // for reading, and the same audio + Play control so narration is still
+  // available — audio isn't the motion prefers-reduced-motion asks us to
+  // avoid, only the timed visual choreography is.
   if (prefersReducedMotion) {
     return (
-      <div style={styles.frame}>
-        <div style={{ ...styles.sceneInner, position: "relative", overflow: "auto", padding: "20px 16px" }}>
-          <MechanismDiagram
-            steps={[{ organ: "brain" }, { organ: "hypothalamus" }, { organ: "pituitary" }, { organ: "adrenal" }]}
-            active={false}
-            disableAnimation
-          />
-          <div style={{ marginTop: 20 }}>
-            <HormoneGraph
-              idealPoints={GRAPH_IDEAL}
-              actualPoints={GRAPH_ACTUAL}
-              optimalRange={{ top: 0.85, bottom: 0.45 }}
-              idealLegendLabel="理想的なリズム"
-              actualLegendLabel="この方の実際のパターン"
-            />
+      <div>
+        <div style={styles.frame}>
+          <div style={{ ...styles.sceneInner, position: "relative", overflow: "auto", padding: "20px 16px" }}>
+            <MechanismDiagram steps={steps} activeIndex={3} disableAnimation />
           </div>
-          <div style={{ marginTop: 20 }}>
-            <LabReportCard title="唾液ホルモン検査結果" rows={REPORT_ROWS} isSampleData />
-          </div>
-          <div style={{ marginTop: 14 }}>
-            <CauseEffectConnector>
-              <strong style={{ color: hiColor.ink }}>起床時コルチゾールが基準値を下回っています。</strong>
-              これが「朝すっきり起きれない」「集中力が続かない」という感覚と直接つながっています。
-            </CauseEffectConnector>
-          </div>
+          <p style={styles.srOnly}>{FULL_TRANSCRIPT}</p>
         </div>
-        <p style={styles.srOnly}>{FULL_TRANSCRIPT}</p>
+        {audioEl}
+        <div style={styles.controls}>
+          <button onClick={play} style={styles.playButton} disabled={playState === "playing"}>
+            {playState === "playing" ? "Playing…" : playState === "done" ? "Replay narration" : "Play narration"}
+          </button>
+        </div>
       </div>
     );
   }
@@ -171,9 +155,8 @@ export function Scene02() {
   const inExit = elapsed >= EXIT_START;
   const exitProgress = inExit ? Math.min(1, (elapsed - EXIT_START) / (SCENE_DURATION_S - EXIT_START)) : 0;
 
-  const act1Opacity = fadeWindow(elapsed, ACT1_START, ACT1_FADE_OUT_START, ACT1_END);
-  const act2Opacity = fadeWindow(elapsed, ACT2_START, ACT2_FADE_OUT_START, ACT2_END);
-  const act3Opacity = elapsed >= ACT3_START ? Math.min(1, (elapsed - ACT3_START) / 0.9) : 0;
+  const activeStepIndex =
+    elapsed >= STEP_ADRENAL_START ? 3 : elapsed >= STEP_PITUITARY_START ? 2 : elapsed >= STEP_HYPOTHALAMUS_START ? 1 : 0;
 
   return (
     <div>
@@ -185,31 +168,8 @@ export function Scene02() {
             transition: playState === "idle" ? "opacity 1000ms ease-in" : "opacity 200ms linear",
           }}
         >
-          <div style={{ ...styles.actLayer, opacity: act1Opacity }}>
-            <MechanismDiagram
-              steps={[{ organ: "brain" }, { organ: "hypothalamus" }, { organ: "pituitary" }, { organ: "adrenal" }]}
-              active={playState === "playing" && act1Opacity > 0.1}
-            />
-          </div>
-
-          <div style={{ ...styles.actLayer, opacity: act2Opacity, padding: "0 24px" }}>
-            <HormoneGraph
-              idealPoints={GRAPH_IDEAL}
-              actualPoints={GRAPH_ACTUAL}
-              optimalRange={{ top: 0.85, bottom: 0.45 }}
-              idealLegendLabel="理想的なリズム"
-              actualLegendLabel="この方の実際のパターン"
-            />
-          </div>
-
-          <div style={{ ...styles.actLayer, opacity: act3Opacity, padding: "0 20px", justifyContent: "flex-start", paddingTop: "18%" }}>
-            <LabReportCard title="唾液ホルモン検査結果" rows={REPORT_ROWS} isSampleData />
-            <div style={{ marginTop: 14, width: "100%" }}>
-              <CauseEffectConnector>
-                <strong style={{ color: hiColor.ink }}>起床時コルチゾールが基準値を下回っています。</strong>
-                これが「朝すっきり起きれない」感覚と直接つながっています。
-              </CauseEffectConnector>
-            </div>
+          <div style={styles.actLayer}>
+            <MechanismDiagram steps={steps} activeIndex={activeStepIndex} active={playState === "playing" && !inExit} />
           </div>
 
           {activeSubtitle && !inExit && (
@@ -228,6 +188,8 @@ export function Scene02() {
 
         <p style={styles.srOnly}>{FULL_TRANSCRIPT}</p>
       </div>
+
+      {audioEl}
 
       <div style={styles.controls}>
         <button onClick={play} style={styles.playButton} disabled={playState === "playing"}>
@@ -263,8 +225,6 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     padding: "0 14%",
-    transition: "opacity 700ms ease-in-out",
-    pointerEvents: "none",
   },
   subtitleBox: {
     position: "absolute",

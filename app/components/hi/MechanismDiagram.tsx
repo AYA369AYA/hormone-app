@@ -31,6 +31,14 @@ export interface MechanismDiagramProps {
   loop?: boolean;
   size?: number;
   disableAnimation?: boolean;
+  /**
+   * Controlled mode: when provided, this index is pulsed instead of the
+   * component's own internal timer — the parent scene drives timing
+   * directly (e.g. synced to a narration track). `active`/`loop` are
+   * ignored while this is set. Omit for the default self-looping demo
+   * behaviour (a fixed topology with no external timeline to follow).
+   */
+  activeIndex?: number;
   className?: string;
   style?: CSSProperties;
 }
@@ -41,6 +49,7 @@ export function MechanismDiagram({
   loop = true,
   size,
   disableAnimation = false,
+  activeIndex,
   className,
   style,
 }: MechanismDiagramProps) {
@@ -48,13 +57,15 @@ export function MechanismDiagram({
   const animationsOff = disableAnimation || prefersReducedMotion;
   const [pulsingIndex, setPulsingIndex] = useState(0);
 
-  const running = active && !animationsOff && steps.length > 1;
+  const controlled = activeIndex !== undefined;
+  const running = !controlled && active && !animationsOff && steps.length > 1;
 
   // The sequencing timer — a genuine external clock subscription, the
   // same pattern already used in A2 SignalPath. Reduced-motion/static
   // scenes never enter this branch, so the diagram is always readable at
   // a glance from labels/layout alone, per Visual Language v2's
-  // "understand with audio muted" principle.
+  // "understand with audio muted" principle. Skipped entirely in
+  // controlled mode — the parent owns timing there.
   useEffect(() => {
     if (!running) return;
     // No explicit reset to step 0 here: pulsingIndex already starts at 0
@@ -78,7 +89,8 @@ export function MechanismDiagram({
     return () => window.clearInterval(interval);
   }, [running, loop, steps.length]);
 
-  const effectivePulsingIndex = animationsOff ? -1 : pulsingIndex;
+  const effectivePulsingIndex = animationsOff ? -1 : controlled ? activeIndex : pulsingIndex;
+  const arrowsActive = animationsOff ? false : controlled ? active : running;
 
   return (
     <div
@@ -99,7 +111,7 @@ export function MechanismDiagram({
               <OrganNode
                 organ={step.organ}
                 state={step.vitality ?? "healthy"}
-                pulse={running && effectivePulsingIndex === i}
+                pulse={arrowsActive && effectivePulsingIndex === i}
                 disableAnimation={animationsOff}
               />
             </div>
@@ -107,7 +119,7 @@ export function MechanismDiagram({
             <span style={{ fontSize: 10, color: hiColor.inkMuted }}>{hiOrganLabelEn[step.organ]}</span>
           </div>
           {i < steps.length - 1 && (
-            <FlowArrow active={running && (effectivePulsingIndex === i || effectivePulsingIndex === i + 1)} />
+            <FlowArrow active={arrowsActive && (effectivePulsingIndex === i || effectivePulsingIndex === i + 1)} />
           )}
         </div>
       ))}
