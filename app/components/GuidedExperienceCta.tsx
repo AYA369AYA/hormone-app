@@ -6,11 +6,12 @@ export function GuidedExperienceCta({ source }: { source: Source }) {
   return (
     <div style={styles.wrapper}>
       <p style={styles.kicker}>5-DAY GUIDED EXPERIENCE</p>
-      <p style={styles.heading}>
-        今の不調を、症状だけで終わらせないために。
-      </p>
+      <p style={styles.mainHeading}>Hormone Intelligence Journey</p>
+      <p style={styles.subtitle}>身体の現在地を深く知る、5日間の無料解説動画</p>
       <p style={styles.body}>
-        女性の身体とホルモンを読み解くヒントをお届けします。
+        今の不調を、症状だけで終わらせないために。
+        <br />
+        女性の身体とホルモンのつながりを、わかりやすく読み解いていきます。
       </p>
       <EmailSignupForm
         source={source}
@@ -27,9 +28,12 @@ Hormone Intelligence Journeyをお届けします。
 どのようにつながっているのかを、
 少しずつ理解していただけます。
 
-配信開始まで、もうしばらくお待ちください。`}
+配信開始まで、もうしばらくお待ちください。
+
+メールが届かない場合は、迷惑メールフォルダもご確認ください。
+「迷惑メールではない」に設定していただくと、次回以降届きやすくなります。`}
       />
-      <p style={styles.note}>1日1本、5日間にわたってお届けします。いつでも解除できます。</p>
+      <p style={styles.note}>1日1本お届けします。いつでも解除できます。</p>
     </div>
   );
 }
@@ -48,11 +52,18 @@ const styles: Record<string, CSSProperties> = {
     color: "#A08F7E",
     marginBottom: 10,
   },
-  heading: {
-    fontSize: 18,
-    lineHeight: 1.6,
+  mainHeading: {
+    fontSize: 24,
+    lineHeight: 1.4,
     color: "#2C2A28",
-    marginBottom: 10,
+    fontWeight: 600,
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 15,
+    lineHeight: 1.6,
+    color: "#5A534D",
+    marginBottom: 14,
   },
   body: {
     fontSize: 14,

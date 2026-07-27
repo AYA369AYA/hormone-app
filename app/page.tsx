@@ -1,7 +1,7 @@
 import { normalizeSource } from "@/lib/source";
 import { AnalyticsEvent } from "./components/AnalyticsEvent";
 import { GuidedExperienceCta } from "./components/GuidedExperienceCta";
-import { RhythmChart } from "./components/RhythmChart";
+import { StressRecoveryGauges } from "./components/StressRecoveryGauges";
 import { ResultPortrait } from "./components/ResultPortrait";
 
 const questions = [
@@ -106,7 +106,7 @@ export default async function Page({
           </div>
 
           <ResultPortrait />
-          <RhythmChart score={score} deepScore={deepScore} />
+          <StressRecoveryGauges score={score} deepScore={deepScore} />
 
           <div style={styles.deep}>
             {hasDeepPattern ? (
