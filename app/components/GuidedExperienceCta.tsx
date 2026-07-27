@@ -16,7 +16,7 @@ export function GuidedExperienceCta({ source }: { source: Source }) {
         source={source}
         label=""
         placeholder="メールアドレス"
-        buttonLabel="ホルモンを整えるヒントを受け取る"
+        buttonLabel="無料で解説動画を受け取る"
         successMessage={`ご登録ありがとうございます。
 
 Hormone Intelligence Journeyは現在最終調整中です。

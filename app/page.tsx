@@ -1,5 +1,4 @@
 import { normalizeSource } from "@/lib/source";
-import { getJourneyConfig } from "@/lib/journeyConfig";
 import { AnalyticsEvent } from "./components/AnalyticsEvent";
 import { GuidedExperienceCta } from "./components/GuidedExperienceCta";
 import { RhythmChart } from "./components/RhythmChart";
@@ -39,7 +38,6 @@ export default async function Page({
   const submitted = params.submitted === "true";
   const started = params.started === "true";
   const source = normalizeSource(params.source);
-  const config = getJourneyConfig();
 
   const answers = questions.map((_, i) => Number(params[`q${i}`] ?? 0));
   const score = answers.reduce((sum, v) => sum + v, 0);
@@ -137,39 +135,14 @@ export default async function Page({
           </div>
 
           <p style={styles.limitNote}>
-            セルフテストは、今の傾向を知るための手がかりです。
-            <br />
-            実際のホルモン量そのものは、唾液ホルモン検査でなければ分かりません。
+            実際のホルモン量そのものは、この結果だけでは分かりません。
           </p>
 
           <div style={styles.cta}>
             <p>{result.cta}</p>
-            <p>
-              唾液女性ホルモン検査では、ホルモンの状態を確認しながら、
-              今の身体をもう少し詳しく知ることができます。
-            </p>
           </div>
 
-          <a
-            href={config.testUrl || `/journey/video?source=${source}`}
-            style={styles.primaryCta}
-          >
-            唾液ホルモン検査で現在地を確認する
-          </a>
-
-          <a
-            href={`/journey/video?source=${source}`}
-            style={styles.bookBox}
-          >
-            <p style={styles.bookBoxSign}>ここでご紹介したのは、身体からのサインです。</p>
-            <p style={styles.bookBoxNext}>身体では今、何が起こっているのでしょうか？</p>
-            <p style={styles.bookBoxBody}>
-              イライラや疲労感、睡眠のお悩み、PMS、朝すっきり起きられない、
-              食欲がないなど、日々感じている身体の変化を、
-              唾液ホルモン検査で数値とともに詳しく確認します。
-            </p>
-            <p style={styles.bookBoxNext}>唾液ホルモン検査・解説セッションを見る</p>
-          </a>
+          <p style={styles.pivotNote}>セルフテストで現在地を確認しました。</p>
 
           <GuidedExperienceCta source={source} />
         </div>
@@ -382,40 +355,12 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 13,
     color: "#A08F7E",
   },
-  primaryCta: {
-    display: "block",
+  pivotNote: {
+    marginTop: 20,
+    marginBottom: 4,
+    fontSize: 13,
+    letterSpacing: "0.04em",
+    color: "#A08F7E",
     textAlign: "center",
-    marginTop: 16,
-    padding: 16,
-    width: "100%",
-    borderRadius: 999,
-    border: "1px solid #C6A96B",
-    background: "#C6A96B",
-    color: "#fff",
-    fontSize: 16,
-    textDecoration: "none",
-    boxSizing: "border-box",
-  },
-  bookBox: {
-    display: "block",
-    marginTop: 16,
-    padding: 16,
-    borderRadius: 14,
-    background: "#FFFFFF",
-    border: "1px solid rgba(198,169,107,0.35)",
-    lineHeight: 1.8,
-    textDecoration: "none",
-    color: "#2C2A28",
-  },
-  bookBoxSign: {
-    color: "#5A534D",
-  },
-  bookBoxNext: {
-    marginTop: 6,
-    fontWeight: 600,
-  },
-  bookBoxBody: {
-    marginTop: 10,
-    color: "#5A534D",
   },
 };
