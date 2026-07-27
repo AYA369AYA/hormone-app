@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { trackEvent } from "./AnalyticsEvent";
+import { InstagramLiveCta } from "./InstagramLiveCta";
 import type { Source } from "@/lib/source";
 
 export function TestimonialVideo({
@@ -11,6 +12,7 @@ export function TestimonialVideo({
   src,
   poster,
   source,
+  instagramTopic,
 }: {
   id: string;
   heading: string;
@@ -18,6 +20,7 @@ export function TestimonialVideo({
   src: string;
   poster: string;
   source: Source;
+  instagramTopic?: string;
 }) {
   function handlePlay() {
     trackEvent("journey_testimonial_play", { source, video: id });
@@ -38,6 +41,7 @@ export function TestimonialVideo({
           onPlay={handlePlay}
         />
       </div>
+      <InstagramLiveCta topic={instagramTopic} />
     </section>
   );
 }
