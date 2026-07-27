@@ -1,7 +1,9 @@
 import { normalizeSource } from "@/lib/source";
+import { getJourneyConfig } from "@/lib/journeyConfig";
 import { AnalyticsEvent } from "./components/AnalyticsEvent";
-import { EmailSignupForm } from "./components/EmailSignupForm";
 import { GuidedExperienceCta } from "./components/GuidedExperienceCta";
+import { RhythmChart } from "./components/RhythmChart";
+import { ResultPortrait } from "./components/ResultPortrait";
 
 const questions = [
   "朝起きても、すっきりした感じが少ない",
@@ -28,34 +30,6 @@ const labels = [
   { text: "よくある", value: 3 },
 ];
 
-function GraphBar({ label, value }: { label: string; value: number }) {
-  return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-        <span>{label}</span>
-        <span>{Math.round(value)}%</span>
-      </div>
-      <div
-        style={{
-          height: 10,
-          borderRadius: 999,
-          background: "rgba(198,169,107,0.18)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: `${value}%`,
-            height: "100%",
-            borderRadius: 999,
-            background: "#C6A96B",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
 export default async function Page({
   searchParams,
 }: {
@@ -65,6 +39,7 @@ export default async function Page({
   const submitted = params.submitted === "true";
   const started = params.started === "true";
   const source = normalizeSource(params.source);
+  const config = getJourneyConfig();
 
   const answers = questions.map((_, i) => Number(params[`q${i}`] ?? 0));
   const score = answers.reduce((sum, v) => sum + v, 0);
@@ -104,7 +79,7 @@ export default async function Page({
 
   if (submitted) {
     return (
-      <main style={styles.main}>
+      <main style={styles.heroMain}>
         <div style={styles.card}>
           <AnalyticsEvent
             name="self_check_complete"
@@ -132,12 +107,8 @@ export default async function Page({
             </p>
           </div>
 
-          <div style={styles.graphBox}>
-            <p style={styles.graphTitle}>現在のリズム</p>
-            <GraphBar label="回復力" value={100 - Math.min(score * 2.2, 100)} />
-            <GraphBar label="消耗サイン" value={Math.min(score * 2.2, 100)} />
-            <GraphBar label="深層パターン" value={Math.min(deepScore * 33, 100)} />
-          </div>
+          <ResultPortrait />
+          <RhythmChart score={score} deepScore={deepScore} />
 
           <div style={styles.deep}>
             {hasDeepPattern ? (
@@ -165,6 +136,12 @@ export default async function Page({
             )}
           </div>
 
+          <p style={styles.limitNote}>
+            セルフテストは、今の傾向を知るための手がかりです。
+            <br />
+            実際のホルモン量そのものは、唾液ホルモン検査でなければ分かりません。
+          </p>
+
           <div style={styles.cta}>
             <p>{result.cta}</p>
             <p>
@@ -172,6 +149,13 @@ export default async function Page({
               今の身体をもう少し詳しく知ることができます。
             </p>
           </div>
+
+          <a
+            href={config.testUrl || `/journey/video?source=${source}`}
+            style={styles.primaryCta}
+          >
+            唾液ホルモン検査で現在地を確認する
+          </a>
 
           <a
             href={`/journey/video?source=${source}`}
@@ -186,11 +170,6 @@ export default async function Page({
             </p>
             <p style={styles.bookBoxNext}>唾液ホルモン検査・解説セッションを見る</p>
           </a>
-
-          <EmailSignupForm
-            source={source}
-            redirectTo={`/journey/video?source=${source}`}
-          />
 
           <GuidedExperienceCta source={source} />
         </div>
@@ -396,6 +375,26 @@ const styles: Record<string, React.CSSProperties> = {
     background: "#EFE4D4",
     borderRadius: 12,
     lineHeight: 1.8,
+  },
+  limitNote: {
+    marginTop: 16,
+    lineHeight: 1.8,
+    fontSize: 13,
+    color: "#A08F7E",
+  },
+  primaryCta: {
+    display: "block",
+    textAlign: "center",
+    marginTop: 16,
+    padding: 16,
+    width: "100%",
+    borderRadius: 999,
+    border: "1px solid #C6A96B",
+    background: "#C6A96B",
+    color: "#fff",
+    fontSize: 16,
+    textDecoration: "none",
+    boxSizing: "border-box",
   },
   bookBox: {
     display: "block",

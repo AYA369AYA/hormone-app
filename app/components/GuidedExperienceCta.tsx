@@ -6,19 +6,17 @@ export function GuidedExperienceCta({ source }: { source: Source }) {
   return (
     <div style={styles.wrapper}>
       <p style={styles.kicker}>5-DAY GUIDED EXPERIENCE</p>
-      <p style={styles.heading}>あなたの身体を知る、5日間。</p>
+      <p style={styles.heading}>
+        今の不調を、症状だけで終わらせないために。
+      </p>
       <p style={styles.body}>
-        セルフテストは、その入口にすぎません。
-        <br />
-        5日間、1日1本。あなたの身体が語るサインを、
-        <br />
-        順を追って紐解いていきます。
+        女性の身体とホルモンを読み解くヒントをお届けします。
       </p>
       <EmailSignupForm
         source={source}
         label=""
         placeholder="メールアドレス"
-        buttonLabel="無料で受け取る"
+        buttonLabel="ホルモンを整えるヒントを受け取る"
         successMessage={`ご登録ありがとうございます。
 
 Hormone Intelligence Journeyは現在最終調整中です。
