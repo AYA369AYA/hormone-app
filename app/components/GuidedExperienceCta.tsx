@@ -19,10 +19,15 @@ export function GuidedExperienceCta({ source }: { source: Source }) {
         buttonLabel="無料で解説動画を受け取る"
         successMessage={`ご登録ありがとうございます。
 
-Hormone Intelligence Journeyは現在最終調整中です。
-まもなく、あなたの身体を知るための5日間の動画をお届けします。
+これから、セルフテストの結果をさらに深く読み解くための
+Hormone Intelligence Journeyをお届けします。
 
-まずはセルフテストを通して、ご自身の身体のリズムを感じてみてください。`}
+解説動画を通して、
+今感じている不調と、ホルモンやストレスの状態が
+どのようにつながっているのかを、
+少しずつ理解していただけます。
+
+配信開始まで、もうしばらくお待ちください。`}
       />
       <p style={styles.note}>1日1本、5日間にわたってお届けします。いつでも解除できます。</p>
     </div>
