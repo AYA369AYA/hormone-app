@@ -2,7 +2,6 @@ import { normalizeSource } from "@/lib/source";
 import { AnalyticsEvent } from "./components/AnalyticsEvent";
 import { GuidedExperienceCta } from "./components/GuidedExperienceCta";
 import { StressRecoveryGauges } from "./components/StressRecoveryGauges";
-import { ResultPortrait } from "./components/ResultPortrait";
 
 const questions = [
   "朝起きても、すっきりした感じが少ない",
@@ -105,7 +104,16 @@ export default async function Page({
             </p>
           </div>
 
-          <ResultPortrait />
+          <p style={styles.firstStepNote}>
+            あなたの身体の現在地を知る、
+            <br />
+            最初の一歩です。
+            <br />
+            <br />
+            身体を知ることは、
+            <br />
+            自分を知ることにもつながっていきます。
+          </p>
           <StressRecoveryGauges score={score} deepScore={deepScore} />
 
           <div style={styles.deep}>
@@ -354,6 +362,14 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.8,
     fontSize: 13,
     color: "#A08F7E",
+  },
+  firstStepNote: {
+    marginTop: 20,
+    padding: "18px 4px",
+    lineHeight: 1.9,
+    fontSize: 15,
+    color: "#5A534D",
+    textAlign: "center",
   },
   pivotNote: {
     marginTop: 20,

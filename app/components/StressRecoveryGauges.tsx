@@ -36,7 +36,7 @@ export function StressRecoveryGauges({
       <p style={styles.summary}>{describeTendency(stress, recovery)}</p>
 
       <p style={styles.disclaimer}>
-        ※セルフテストの回答から推測される傾向を可視化したものです。医学的な測定値や診断結果ではありません。実際のホルモン量やホルモンバランスは、唾液ホルモン検査で確認します。
+        ※この結果は、セルフテストから見える身体の傾向です。より詳しい身体の現在地は、唾液ホルモン検査で確認できます。
       </p>
     </div>
   );
