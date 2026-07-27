@@ -3,12 +3,16 @@ export interface JourneyConfig {
   testUrl: string;
   ctaLabel: string;
   ctaDescription: string;
+  liveVideoUrl: string;
+  liveVideoPoster: string;
+  cortisolChartImage: string;
+  testResultImage: string;
 }
 
-const DEFAULT_CTA_LABEL = "唾液ホルモン検査の案内を見る";
+const DEFAULT_CTA_LABEL = "唾液女性ホルモン検査で、今の自分を知る";
 
 const DEFAULT_CTA_DESCRIPTION =
-  "唾液ホルモン検査では、プロゲステロンとエストロゲンのバランスや、コルチゾールのリズムを確認しながら、今の体の状態と日常のエネルギーの使い方をつなげて見ていくことができます。";
+  "唾液女性ホルモン検査では、プロゲステロンとエストロゲンのバランスや、コルチゾールのリズムを確認しながら、今の体の状態と日常のエネルギーの使い方をつなげて見ていくことができます。";
 
 /**
  * 動画URL・検査URL・CTA文言の取得口。
@@ -21,5 +25,9 @@ export function getJourneyConfig(): JourneyConfig {
     testUrl: process.env.JOURNEY_TEST_URL ?? "",
     ctaLabel: process.env.JOURNEY_CTA_LABEL ?? DEFAULT_CTA_LABEL,
     ctaDescription: process.env.JOURNEY_CTA_DESCRIPTION ?? DEFAULT_CTA_DESCRIPTION,
+    liveVideoUrl: process.env.JOURNEY_LIVE_VIDEO_URL ?? "",
+    liveVideoPoster: process.env.JOURNEY_LIVE_VIDEO_POSTER ?? "",
+    cortisolChartImage: process.env.JOURNEY_CORTISOL_CHART_IMAGE ?? "",
+    testResultImage: process.env.JOURNEY_TEST_RESULT_IMAGE ?? "",
   };
 }
