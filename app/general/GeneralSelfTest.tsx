@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Source } from "@/lib/source";
 import { GuidedExperienceCta } from "../components/GuidedExperienceCta";
 import { SalivaTestChoiceCta } from "../components/SalivaTestChoiceCta";
+import { SalivaTestSample } from "../components/SalivaTestSample";
 import { StressRecoveryGauges } from "../components/StressRecoveryGauges";
 import { TestimonialSection } from "../components/TestimonialSection";
 
@@ -382,6 +383,40 @@ export function GeneralSelfTest({
           }}
         >
           <StressRecoveryGauges stress={stressValue} recovery={recoveryValue} />
+
+          <div
+            style={{
+              marginTop: 32,
+              padding: "4px 6px",
+              textAlign: "center",
+              lineHeight: 2,
+              fontSize: 14,
+              color: "#5A534D",
+            }}
+          >
+            <p>セルフテストで見えてくるのは、今の身体の傾向です。</p>
+            <p style={{ marginTop: 12 }}>
+              では、ご自身が感じている不調と、
+              <br />
+              実際のホルモンの状態は一致しているのでしょうか。
+            </p>
+            <p style={{ marginTop: 12 }}>
+              唾液ホルモン検査では、
+              <br />
+              1日のコルチゾールのリズムや、
+              <br />
+              女性ホルモンのバランスを確認できます。
+            </p>
+            <p style={{ marginTop: 12 }}>
+              数値だけを受け取る検査ではありません。
+              <br />
+              日常の不調と検査結果を照らし合わせながら、
+              <br />
+              今の身体の現在地を読み解いていきます。
+            </p>
+          </div>
+
+          <SalivaTestSample />
 
           <div
             style={{

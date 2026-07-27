@@ -13,6 +13,8 @@ export function TestimonialSection() {
           <TestimonialCard key={testimonial.id} testimonial={testimonial} />
         ))}
       </div>
+
+      <p style={styles.disclaimer}>※準備中のため、掲載内容はサンプルです。実際の体験談は順次公開予定です。</p>
     </div>
   );
 }
@@ -45,5 +47,12 @@ const styles: Record<string, CSSProperties> = {
     marginRight: -18,
     paddingLeft: 18,
     paddingRight: 18,
+  },
+  disclaimer: {
+    marginTop: 12,
+    fontSize: 11,
+    lineHeight: 1.7,
+    color: "#A08F7E",
+    textAlign: "center",
   },
 };
