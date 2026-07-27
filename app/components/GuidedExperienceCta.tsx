@@ -5,7 +5,7 @@ import { EmailSignupForm } from "./EmailSignupForm";
 export function GuidedExperienceCta({ source }: { source: Source }) {
   return (
     <div style={styles.wrapper}>
-      <p style={styles.kicker}>5-DAY GUIDED EXPERIENCE</p>
+      <p style={styles.kicker}>① 5-DAY GUIDED EXPERIENCE</p>
       <p style={styles.mainHeading}>Hormone Intelligence Journey</p>
       <p style={styles.subtitle}>身体の現在地を深く知る、5日間の無料解説動画</p>
       <p style={styles.body}>

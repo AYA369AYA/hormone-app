@@ -4,18 +4,15 @@ import type { CSSProperties } from "react";
  * セルフテストの回答傾向を「ストレス負荷」「身体の回復力」という
  * 独立した2つのリングゲージ（各0〜100%）で可視化する。
  * ホルモン量・ホルモンバランスの数値は一切表示しない（唾液ホルモン検査のみが扱う領域）。
- * score/deepScoreの計算式自体は変更せず、既存の値を別の見せ方で描画するだけ。
+ * 呼び出し側がそれぞれの採点方式から0〜100%を計算して渡す（採点ロジックはここに持たない）。
  */
 export function StressRecoveryGauges({
-  score,
-  deepScore,
+  stress,
+  recovery,
 }: {
-  score: number;
-  deepScore: number;
+  stress: number;
+  recovery: number;
 }) {
-  const stress = Math.min(score * 2.2, 100);
-  const recovery = Math.max(0, 100 - Math.min(score * 2.2, 100) - deepScore * 6);
-
   return (
     <div style={styles.wrapper}>
       <p style={styles.title}>セルフテストから見える、今の身体の傾向</p>

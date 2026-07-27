@@ -1,6 +1,8 @@
 import { normalizeSource } from "@/lib/source";
+import { getJourneyConfig } from "@/lib/journeyConfig";
 import { AnalyticsEvent } from "./components/AnalyticsEvent";
 import { GuidedExperienceCta } from "./components/GuidedExperienceCta";
+import { SalivaTestChoiceCta } from "./components/SalivaTestChoiceCta";
 import { StressRecoveryGauges } from "./components/StressRecoveryGauges";
 
 const questions = [
@@ -37,12 +39,15 @@ export default async function Page({
   const submitted = params.submitted === "true";
   const started = params.started === "true";
   const source = normalizeSource(params.source);
+  const config = getJourneyConfig();
 
   const answers = questions.map((_, i) => Number(params[`q${i}`] ?? 0));
   const score = answers.reduce((sum, v) => sum + v, 0);
 
   const deepScore = (answers[13] + answers[14]) / 2;
   const hasDeepPattern = deepScore >= 2;
+  const stressValue = Math.min(score * 2.2, 100);
+  const recoveryValue = Math.max(0, 100 - Math.min(score * 2.2, 100) - deepScore * 6);
 
   let result = {
     label: "🟢 バランスが保たれている",
@@ -114,7 +119,7 @@ export default async function Page({
             <br />
             自分を知ることにもつながっていきます。
           </p>
-          <StressRecoveryGauges score={score} deepScore={deepScore} />
+          <StressRecoveryGauges stress={stressValue} recovery={recoveryValue} />
 
           <div style={styles.deep}>
             {hasDeepPattern ? (
@@ -150,9 +155,20 @@ export default async function Page({
             <p>{result.cta}</p>
           </div>
 
-          <p style={styles.pivotNote}>セルフテストで現在地を確認しました。</p>
+          <p style={styles.pivotNote}>
+            セルフテストで現在地を確認しました。
+            <br />
+            ここから、ご自身のペースで次の一歩を選べます。
+          </p>
 
-          <GuidedExperienceCta source={source} />
+          <div style={styles.choiceRow}>
+            <div style={styles.choiceItem}>
+              <GuidedExperienceCta source={source} />
+            </div>
+            <div style={styles.choiceItem}>
+              <SalivaTestChoiceCta testUrl={config.testUrl} />
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -375,8 +391,17 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: 20,
     marginBottom: 4,
     fontSize: 13,
+    lineHeight: 1.8,
     letterSpacing: "0.04em",
     color: "#A08F7E",
     textAlign: "center",
+  },
+  choiceRow: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 16,
+  },
+  choiceItem: {
+    flex: "1 1 260px",
   },
 };
