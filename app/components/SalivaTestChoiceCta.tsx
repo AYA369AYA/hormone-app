@@ -17,9 +17,9 @@ export function SalivaTestChoiceCta({ testUrl }: { testUrl?: string }) {
         唾液ホルモン検査で詳しく確認できます。
       </p>
       <a href={testUrl || "/journey/video"} style={styles.button}>
-        今の身体を詳しく知る（唾液ホルモン検査）
+        <span style={styles.buttonLine1}>今の身体を詳しく知る</span>
+        <span style={styles.buttonLine2}>（唾液ホルモン検査のお申し込み）</span>
       </a>
-      <p style={styles.note}>ご自身のタイミングで、いつでもお申し込みいただけます。</p>
     </div>
   );
 }
@@ -58,22 +58,29 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: 20,
   },
   button: {
-    display: "block",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
     textAlign: "center",
-    padding: 16,
+    padding: "14px 12px",
     borderRadius: 999,
     border: "1px solid #C6A96B",
     background: "#C6A96B",
     color: "#fff",
-    fontSize: 16,
     textDecoration: "none",
     boxSizing: "border-box",
   },
-  note: {
-    marginTop: 10,
+  buttonLine1: {
+    fontSize: 16,
+    fontWeight: 600,
+    lineHeight: 1.4,
+  },
+  buttonLine2: {
     fontSize: 12,
-    lineHeight: 1.7,
-    color: "#A08F7E",
+    lineHeight: 1.5,
+    whiteSpace: "nowrap",
+    marginTop: 2,
   },
 };
