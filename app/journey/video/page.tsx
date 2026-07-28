@@ -2,7 +2,16 @@ import { normalizeSource } from "@/lib/source";
 import { getJourneyConfig } from "@/lib/journeyConfig";
 import { AnalyticsEvent } from "@/app/components/AnalyticsEvent";
 import { SalivaTestCta } from "@/app/components/SalivaTestCta";
-import { TestimonialVideo } from "@/app/components/TestimonialVideo";
+import { SymptomSignals } from "@/app/components/SymptomSignals";
+import { BodyIntroTeaser } from "@/app/components/BodyIntroTeaser";
+import { HormoneTestEvidence } from "@/app/components/HormoneTestEvidence";
+import { BodyCgJourney } from "@/app/components/BodyCgJourney";
+import { WhyKnowSection } from "@/app/components/WhyKnowSection";
+import { LiveVideoSection } from "@/app/components/LiveVideoSection";
+import { CaseStudySection } from "@/app/components/CaseStudySection";
+import { VisionSection } from "@/app/components/VisionSection";
+import { PostApplicationFlow } from "@/app/components/PostApplicationFlow";
+import { EmailNurtureCta } from "@/app/components/EmailNurtureCta";
 
 export default async function JourneyVideoPage({
   searchParams,
@@ -18,39 +27,45 @@ export default async function JourneyVideoPage({
       <div style={styles.card}>
         <AnalyticsEvent name="video_page_view" params={{ source }} />
 
-        <p style={styles.small}>動画</p>
-        <h1 style={styles.title}>解説動画をご覧ください</h1>
+        <p style={styles.small}>Hormone Intelligence</p>
+        <h1 style={styles.title}>
+          身体からのサインを、正しく理解するために。
+        </h1>
 
-        {config.videoUrl ? (
-          <div style={styles.videoWrapper}>
-            <iframe
-              src={config.videoUrl}
-              style={styles.iframe}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        ) : (
-          <div style={styles.videoPlaceholder}>動画は準備中です。</div>
-        )}
+        <p style={styles.lead}>
+          女性の心身の変化については、「女性ホルモンが減ること」が原因というイメージを持たれている方も多いかもしれません。
+        </p>
+        <p style={styles.lead}>
+          ここでは、症状のサインから、実際の検査データ、そしてご自身の身体を取り戻された方々の声まで、
+          Hormone Journeyの全体像をご紹介します。
+        </p>
+        <p style={styles.caption}>※AYA Women&apos;s Clinic Instagramライブより</p>
 
-        <TestimonialVideo
-          id="a1-estrogen-myth"
+        <SymptomSignals />
+
+        <BodyIntroTeaser />
+
+        <HormoneTestEvidence source={source} config={config} />
+
+        <BodyCgJourney />
+
+        <WhyKnowSection />
+
+        <LiveVideoSection
+          liveVideoUrl={config.liveVideoUrl}
+          liveVideoPoster={config.liveVideoPoster}
           source={source}
-          lead="更年期の症状が気になり相談された方の、実際のお話です。"
-          heading="女性ホルモンが足りないと思っていた。でも、実際は違った。"
-          src="/videos/journey/a1-estrogen-myth.mp4"
-          poster="/videos/journey/posters/a1.jpg"
         />
 
-        <TestimonialVideo
-          id="c4-multi-symptom-connection"
-          source={source}
-          lead="デリケートゾーンの不調や手の湿疹など、気になる症状について話している場面です。"
-          heading="一見別々に見える症状も、カラダの中ではつながっていることがあります。"
-          src="/videos/journey/c4-multi-symptom-connection.mp4"
-          poster="/videos/journey/posters/c4.jpg"
-        />
+        <CaseStudySection />
+
+        <VisionSection />
+
+        <p style={styles.lead}>
+          セルフチェックで気になる項目があった方は、唾液女性ホルモン検査で現在のホルモンバランスを確認することができます。
+        </p>
+
+        <PostApplicationFlow />
 
         <SalivaTestCta
           source={source}
@@ -58,6 +73,8 @@ export default async function JourneyVideoPage({
           label={config.ctaLabel}
           description={config.ctaDescription}
         />
+
+        <EmailNurtureCta source={source} />
       </div>
     </main>
   );
@@ -88,26 +105,14 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.6,
     marginBottom: 20,
   },
-  videoWrapper: {
-    position: "relative",
-    paddingTop: "56.25%",
-    borderRadius: 16,
-    overflow: "hidden",
-    background: "#000",
+  lead: {
+    lineHeight: 1.9,
+    color: "#5A534D",
+    marginBottom: 12,
   },
-  iframe: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    border: 0,
-  },
-  videoPlaceholder: {
-    padding: 40,
-    textAlign: "center",
-    borderRadius: 16,
-    background: "#FCFAF7",
+  caption: {
+    fontSize: 12,
     color: "#A08F7E",
+    marginBottom: 8,
   },
 };

@@ -25,6 +25,56 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Hormone Journey: scroll-gated illustration animations. Animations stay
+   off until an ancestor .hj-reveal has been scrolled into view once. */
+.hj-pulse,
+.hj-flicker,
+.hj-dash-flow {
+  animation: none;
+}
+
+.hj-reveal.is-visible .hj-pulse {
+  animation: hj-pulse-kf 3s ease-in-out infinite;
+}
+
+.hj-reveal.is-visible .hj-flicker {
+  animation: hj-flicker-kf 2.6s ease-in-out infinite;
+}
+
+.hj-reveal.is-visible .hj-dash-flow {
+  stroke-dasharray: 6 6;
+  animation: hj-dash-flow-kf 3.5s linear infinite;
+}
+
+@keyframes hj-pulse-kf {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hj-flicker-kf {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  45% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes hj-dash-flow-kf {
+  to {
+    stroke-dashoffset: -60;
+  }
+}
+
 /* Hormone Intelligence CG library (A1 OrganNode and onward). Distinct
    prefix from hj- above: hj- animations are simple always-on ambient
    loops for the static Hormone Journey page; hi- animations are driven

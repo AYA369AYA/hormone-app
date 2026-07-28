@@ -48,3 +48,6 @@ next-env.d.ts
 
 # working files (transcripts, unedited clips) - never commit
 /temp/
+
+# local draft video renders/logs - never commit
+/public/reels/

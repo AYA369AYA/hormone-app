@@ -25,6 +25,7 @@ export function SalivaTestCta({
 
   return (
     <div style={styles.wrapper}>
+      <p style={styles.eyebrow}>今の自分のホルモンバランスを知る</p>
       <p style={styles.description}>{description}</p>
       <a
         href={testUrl}
@@ -35,6 +36,14 @@ export function SalivaTestCta({
       >
         {label}
       </a>
+      <p style={styles.footnote}>
+        検査後は、動画・個別またはグループ解説で結果を理解いただけます。
+      </p>
+      <p style={styles.journeyNote}>
+        唾液女性ホルモン検査は、ゴールではありません。
+        <br />
+        あなたのHormone Journeyの入り口です。
+      </p>
     </div>
   );
 }
@@ -45,6 +54,12 @@ const styles: Record<string, CSSProperties> = {
     padding: 20,
     borderRadius: 18,
     background: "#EFE4D4",
+  },
+  eyebrow: {
+    fontSize: 12,
+    letterSpacing: "0.1em",
+    color: "#8A7857",
+    marginBottom: 8,
   },
   description: {
     marginBottom: 16,
@@ -60,5 +75,22 @@ const styles: Record<string, CSSProperties> = {
     background: "#fff",
     color: "#2C2A28",
     textDecoration: "none",
+  },
+  footnote: {
+    marginTop: 12,
+    fontSize: 12,
+    lineHeight: 1.7,
+    color: "#8A7857",
+    textAlign: "center",
+  },
+  journeyNote: {
+    marginTop: 16,
+    paddingTop: 16,
+    borderTop: "1px solid rgba(198,169,107,0.3)",
+    fontSize: 13,
+    lineHeight: 1.8,
+    color: "#2C2A28",
+    fontWeight: 600,
+    textAlign: "center",
   },
 };
