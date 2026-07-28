@@ -328,40 +328,6 @@ export function GeneralSelfTest({
           >
             <p
               style={{
-                textAlign: "center",
-                fontSize: "13px",
-                letterSpacing: "2px",
-                color: "#7b6a58",
-                marginBottom: "18px",
-              }}
-            >
-              HORMONE RECOVERY SCORE
-            </p>
-
-            <div
-              style={{
-                textAlign: "center",
-                fontSize: "64px",
-                color: "#2f2923",
-                marginBottom: "8px",
-              }}
-            >
-              {Math.min(100, total * 2)}
-            </div>
-
-            <p
-              style={{
-                textAlign: "center",
-                color: "#8a7865",
-                marginBottom: "30px",
-                letterSpacing: "1px",
-              }}
-            >
-              {recoveryType}
-            </p>
-
-            <p
-              style={{
                 whiteSpace: "pre-line",
                 color: "#4c4138",
                 lineHeight: "2.2",
@@ -383,7 +349,11 @@ export function GeneralSelfTest({
             fontFamily: "sans-serif",
           }}
         >
-          <StressRecoveryGauges stress={stressValue} recovery={recoveryValue} />
+          <StressRecoveryGauges
+            stress={stressValue}
+            recovery={recoveryValue}
+            disclaimer="※このセルフチェックは、現在のストレス負荷と回復力の傾向を推定するものです。実際のホルモンバランス（プロゲステロン、エストロゲン、コルチゾール、DHEA-Sなど）は、唾液ホルモン検査でのみ確認できます。"
+          />
 
           <div
             style={{

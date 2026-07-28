@@ -9,9 +9,11 @@ import type { CSSProperties } from "react";
 export function StressRecoveryGauges({
   stress,
   recovery,
+  disclaimer,
 }: {
   stress: number;
   recovery: number;
+  disclaimer?: string;
 }) {
   return (
     <div style={styles.wrapper}>
@@ -33,7 +35,8 @@ export function StressRecoveryGauges({
       <p style={styles.summary}>{describeTendency(stress, recovery)}</p>
 
       <p style={styles.disclaimer}>
-        ※この結果は、セルフテストから見える身体の傾向です。より詳しい身体の現在地は、唾液ホルモン検査で確認できます。
+        {disclaimer ??
+          "※この結果は、セルフテストから見える身体の傾向です。より詳しい身体の現在地は、唾液ホルモン検査で確認できます。"}
       </p>
     </div>
   );
