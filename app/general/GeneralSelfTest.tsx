@@ -40,6 +40,10 @@ export function GeneralSelfTest({
 
   const [showResult, setShowResult] = useState(false);
 
+  // 未回答(初期値0)が残っていると合計に0点が混ざり、結果が実際の回答より
+  // 低い(穏やかな)方向に大きくぶれてしまうため、全問回答するまで結果を見れない。
+  const allAnswered = answers.every((value) => value > 0);
+
   const total = answers.reduce((sum, value) => sum + value, 0);
 
   // 質問は1〜5点×15問(15〜75)。ストレス/回復力ゲージ用に0〜100%へ正規化する。
@@ -299,20 +303,33 @@ export function GeneralSelfTest({
         <div style={{ textAlign: "center", marginTop: "30px" }}>
           <button
             onClick={() => setShowResult(true)}
+            disabled={!allAnswered}
             style={{
               padding: "14px 34px",
               borderRadius: "999px",
               border: "none",
-              backgroundColor: "#2f2923",
+              backgroundColor: allAnswered ? "#2f2923" : "#c9bfb2",
               color: "#fff",
               fontFamily: "serif",
               fontSize: "14px",
               letterSpacing: "1px",
-              cursor: "pointer",
+              cursor: allAnswered ? "pointer" : "not-allowed",
             }}
           >
             結果を見る
           </button>
+          {!allAnswered && (
+            <p
+              style={{
+                marginTop: "12px",
+                fontSize: "12px",
+                color: "#8a7865",
+                letterSpacing: "0.5px",
+              }}
+            >
+              すべての質問にお答えください
+            </p>
+          )}
         </div>
 
         {showResult && (
