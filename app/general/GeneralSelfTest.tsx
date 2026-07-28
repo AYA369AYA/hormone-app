@@ -5,6 +5,7 @@ import type { Source } from "@/lib/source";
 import { GuidedExperienceCta } from "../components/GuidedExperienceCta";
 import { SalivaTestChoiceCta } from "../components/SalivaTestChoiceCta";
 import { SalivaTestSample } from "../components/SalivaTestSample";
+import { SalivaTestTestimonialSection } from "../components/SalivaTestTestimonialSection";
 import { StressRecoveryGauges } from "../components/StressRecoveryGauges";
 import { TestimonialSection } from "../components/TestimonialSection";
 
@@ -417,6 +418,8 @@ export function GeneralSelfTest({
           </div>
 
           <SalivaTestSample />
+
+          <SalivaTestTestimonialSection />
 
           <div
             style={{
