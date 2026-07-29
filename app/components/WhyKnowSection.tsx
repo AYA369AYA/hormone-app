@@ -37,6 +37,12 @@ export function WhyKnowSection() {
         <br />
         まず自分のホルモンバランスを知ることをおすすめしています。
       </p>
+
+      <img
+        src="/images/lovable/editorial-Bx8taHTy.jpg"
+        alt="朝の柔らかな光が差し込む、リネンの上でくつろぐ穏やかなシーン"
+        style={styles.photo}
+      />
     </ScrollReveal>
   );
 }
@@ -65,5 +71,15 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: 1.9,
     color: "#5A534D",
     marginBottom: 12,
+  },
+  photo: {
+    marginTop: 20,
+    width: "100%",
+    maxWidth: 360,
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 18,
+    objectFit: "cover",
   },
 };

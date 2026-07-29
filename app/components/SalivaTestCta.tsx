@@ -25,6 +25,11 @@ export function SalivaTestCta({
 
   return (
     <div style={styles.wrapper}>
+      <img
+        src="/images/lovable/saliva-kit-CdyXIEvw.jpg"
+        alt="シルクの布の上に置かれた、上品な唾液ホルモン検査キット"
+        style={styles.photo}
+      />
       <p style={styles.eyebrow}>今の自分のホルモンバランスを知る</p>
       <p style={styles.description}>{description}</p>
       <a
@@ -54,6 +59,15 @@ const styles: Record<string, CSSProperties> = {
     padding: 20,
     borderRadius: 18,
     background: "#EFE4D4",
+  },
+  photo: {
+    width: "100%",
+    maxWidth: 320,
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginBottom: 16,
+    borderRadius: 18,
   },
   eyebrow: {
     fontSize: 12,

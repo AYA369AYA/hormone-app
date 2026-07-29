@@ -252,16 +252,21 @@ const styles: Record<string, React.CSSProperties> = {
     background: "linear-gradient(180deg,#F7F3EE,#EFE7DC)",
     fontFamily: "serif",
   },
-  // Landing/hero screen only — recreates the Lovable landing page's hero
-  // background (ivory base + soft gold radial glow) using the same color
-  // tokens (--ivory, --ivory-deep, --gold-soft) from luxe-hormones.lovable.app.
+  // Landing/hero screen only — the original Lovable hero photo
+  // (hero-Bj9vEP9k.jpg from luxe-hormones.lovable.app), with the same
+  // ivory/gold scrim (--ivory, --ivory-deep, --gold-soft tokens) laid over
+  // it as a semi-transparent overlay so the hero text stays legible.
   // The question form and results screens keep the original `main` background.
   heroMain: {
     minHeight: "100vh",
     padding: "32px 18px",
-    background:
-      "radial-gradient(circle at 50% 30%, oklch(88% .05 85) 0%, transparent 65%), " +
-      "linear-gradient(180deg, oklch(98.5% .008 85), oklch(95.5% .014 85))",
+    backgroundImage:
+      "radial-gradient(circle at 50% 30%, oklch(88% .05 85 / 0.55) 0%, transparent 65%), " +
+      "linear-gradient(180deg, oklch(98.5% .008 85 / 0.75), oklch(95.5% .014 85 / 0.88)), " +
+      "url(/images/lovable/hero-Bj9vEP9k.jpg)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
     fontFamily: "serif",
   },
   card: {
