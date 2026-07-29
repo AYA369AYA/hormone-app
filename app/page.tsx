@@ -1,6 +1,11 @@
 import { normalizeSource } from "@/lib/source";
+import { getJourneyConfig } from "@/lib/journeyConfig";
 import { AnalyticsEvent } from "./components/AnalyticsEvent";
 import { EmailSignupForm } from "./components/EmailSignupForm";
+import { SymptomSignals } from "./components/SymptomSignals";
+import { BodyIntroTeaser } from "./components/BodyIntroTeaser";
+import { HormoneTestEvidence } from "./components/HormoneTestEvidence";
+import { SalivaTestCta } from "./components/SalivaTestCta";
 
 const questions = [
   "朝起きても、すっきりした感じが少ない",
@@ -63,6 +68,7 @@ export default async function Page({
   const params = await searchParams;
   const submitted = params.submitted === "true";
   const source = normalizeSource(params.source);
+  const config = getJourneyConfig();
 
   const answers = questions.map((_, i) => Number(params[`q${i}`] ?? 0));
   const score = answers.reduce((sum, v) => sum + v, 0);
@@ -107,9 +113,9 @@ export default async function Page({
       title: "今は、整えるよりも“満たす”ことが必要な状態です",
       body: `現在のあなたは、エネルギーが先に消耗している状態にあります。
 
-疲れが抜けにくい、何をしても回復しにくいと感じる場合、身体は回復のサインを出しています。
+疲れが抜けにくい、何をしても回復しにくいと感じるのは、身体が「今は満たす番です」と伝えているサインです。
 
-この状態では、休んでいても身体がゆるみきらず、回復している感覚が得られにくくなることがあります。
+この状態は珍しいものではなく、多くの方が同じ入口から回復に向かわれています。
 
 今は整えるよりも、まずエネルギーを満たすことが大切な段階です。`,
       cta: "一度しっかり回復の方向に整えたい方へ",
@@ -132,13 +138,17 @@ export default async function Page({
 
           <p style={styles.body}>{result.body}</p>
 
+          <p style={styles.worldviewNote}>
+            身体を深く知ることは、これからの人生の選択肢を、健やかさという土台から広げていくことにつながります。それが、Hormone Intelligenceという考え方です。
+          </p>
+
           <div style={styles.noteBox}>
             <p>
-              もし「そこまで当てはまらない」と感じた場合でも、不調がないというよりも、
-              身体のサインを感じにくくなっている状態の可能性もあります。
+              この結果は、良い・悪いを判断するものではなく、
+              今のあなたの身体にただ気づくためのものです。
             </p>
             <p>
-              身体は本来、とても繊細に変化を伝えています。
+              身体は本来、とても繊細に、そして常に変化を伝えています。
             </p>
           </div>
 
@@ -184,6 +194,25 @@ export default async function Page({
               </>
             )}
           </div>
+
+          <h2 style={styles.revealHeading}>この結果から、見えてくること</h2>
+          <p style={styles.revealBridge}>
+            ホルモンバランスは、日々の小さな不調だけでなく、これから先の健康にも深く関わっています。
+            今のあなたの身体に何が起きているのか、実際のサインとデータから見ていきましょう。
+          </p>
+
+          <SymptomSignals />
+
+          <BodyIntroTeaser />
+
+          <HormoneTestEvidence source={source} config={config} />
+
+          <SalivaTestCta
+            source={source}
+            testUrl={config.testUrl}
+            label={config.ctaLabel}
+            description={config.ctaDescription}
+          />
 
           <div style={styles.cta}>
             <p>{result.cta}</p>
@@ -321,6 +350,23 @@ const styles: Record<string, React.CSSProperties> = {
   },
   body: {
     whiteSpace: "pre-line",
+    lineHeight: 1.9,
+    color: "#5A534D",
+  },
+  worldviewNote: {
+    marginTop: 16,
+    lineHeight: 1.9,
+    color: "#8A7857",
+    fontStyle: "italic",
+  },
+  revealHeading: {
+    marginTop: 56,
+    fontSize: 20,
+    lineHeight: 1.6,
+    color: "#2C2A28",
+    marginBottom: 12,
+  },
+  revealBridge: {
     lineHeight: 1.9,
     color: "#5A534D",
   },

@@ -2,6 +2,7 @@ import { normalizeSource } from "@/lib/source";
 import { getJourneyConfig } from "@/lib/journeyConfig";
 import { AnalyticsEvent } from "@/app/components/AnalyticsEvent";
 import { SalivaTestCta } from "@/app/components/SalivaTestCta";
+import { HormoneTestEvidence } from "@/app/components/HormoneTestEvidence";
 
 export default async function JourneyVideoPage({
   searchParams,
@@ -32,6 +33,8 @@ export default async function JourneyVideoPage({
         ) : (
           <div style={styles.videoPlaceholder}>動画は準備中です。</div>
         )}
+
+        <HormoneTestEvidence source={source} config={config} />
 
         <SalivaTestCta
           source={source}
