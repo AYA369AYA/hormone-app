@@ -30,7 +30,7 @@ export function FemaleHormoneCg() {
         プロゲステロン
       </text>
       <text x="130" y="90" textAnchor="middle" fontSize="9" fill="#5A534D">
-        女性ホルモン
+        エストロゲン
       </text>
     </svg>
   );

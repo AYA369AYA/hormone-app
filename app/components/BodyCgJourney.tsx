@@ -6,7 +6,13 @@ import { InflammationCg } from "./cg/InflammationCg";
 import { FemaleHormoneCg } from "./cg/FemaleHormoneCg";
 import { WholeBodyCg } from "./cg/WholeBodyCg";
 
-export function BodyCgJourney() {
+export function BodyCgJourney({
+  variant = "full",
+}: {
+  variant?: "full" | "condensed";
+} = {}) {
+  const condensed = variant === "condensed";
+
   return (
     <section style={styles.section}>
       <h2 style={styles.heading}>身体の中では、こんなことが起きています</h2>
@@ -21,12 +27,10 @@ export function BodyCgJourney() {
         </p>
         <div style={styles.noteBox}>
           <p>
-            私はこれまで10万人以上の女性を診てきましたが、慢性的な疲労を抱えている方ほど、
-            「疲れていることが普通」になっています。
+            慢性的な疲労を抱えている方ほど、「疲れていることが普通」になっていることが少なくありません。
           </p>
           <p>
-            そのため、「そういえば最近ずっと疲れていました。」「先生に聞かれて初めて気付きました。」
-            という方が本当に多くいらっしゃいます。
+            そのため、「そういえば最近ずっと疲れていました。」と、指摘されて初めて気づく方も多くいらっしゃいます。
           </p>
         </div>
       </ScrollReveal>
@@ -39,14 +43,15 @@ export function BodyCgJourney() {
         </p>
       </ScrollReveal>
 
-      <ScrollReveal style={styles.block}>
-        <p style={styles.subheading}>炎症・免疫</p>
-        <InflammationCg />
-        {/* TODO(AYA先生確認): 「臨床では」は当院の臨床所見を指す表現です。一般的な説明に留めるか、実際の所見に基づく記述に差し替えるかご判断ください。 */}
-        <p style={styles.body}>
-          臨床では、このような状態の方に、肌荒れやアレルギーなどの症状がみられることがあります。
-        </p>
-      </ScrollReveal>
+      {!condensed && (
+        <ScrollReveal style={styles.block}>
+          <p style={styles.subheading}>炎症・免疫</p>
+          <InflammationCg />
+          <p style={styles.body}>
+            このような状態が続くと、肌荒れやアレルギーなどの症状につながることがあります。
+          </p>
+        </ScrollReveal>
+      )}
 
       <ScrollReveal style={styles.block}>
         <p style={styles.subheading}>女性ホルモン</p>
@@ -56,13 +61,15 @@ export function BodyCgJourney() {
         </p>
       </ScrollReveal>
 
-      <ScrollReveal style={styles.block}>
-        <p style={styles.subheading}>全身</p>
-        <WholeBodyCg />
-        <p style={styles.body}>
-          だから身体は、それぞれが別々に悪くなるのではなく、全身がつながって反応しています。
-        </p>
-      </ScrollReveal>
+      {!condensed && (
+        <ScrollReveal style={styles.block}>
+          <p style={styles.subheading}>全身</p>
+          <WholeBodyCg />
+          <p style={styles.body}>
+            だから身体は、それぞれが別々に悪くなるのではなく、全身がつながって反応しています。
+          </p>
+        </ScrollReveal>
+      )}
     </section>
   );
 }
@@ -81,8 +88,9 @@ const styles: Record<string, CSSProperties> = {
     marginTop: 40,
     padding: 20,
     borderRadius: 18,
-    background: "#fff",
+    background: "linear-gradient(165deg, #FFFFFF 0%, #FCFAF7 100%)",
     border: "1px solid rgba(198,169,107,0.18)",
+    boxShadow: "0 1px 2px rgba(44,42,40,0.03), 0 18px 36px -26px rgba(44,42,40,0.22)",
   },
   subheading: {
     fontSize: 13,
@@ -99,7 +107,8 @@ const styles: Record<string, CSSProperties> = {
     marginTop: 16,
     padding: 16,
     borderRadius: 12,
-    background: "#F5EFE6",
+    background: "linear-gradient(165deg, #F8F1E6 0%, #F5EFE6 100%)",
+    border: "1px solid rgba(198,169,107,0.14)",
     lineHeight: 1.8,
     color: "#5A534D",
   },

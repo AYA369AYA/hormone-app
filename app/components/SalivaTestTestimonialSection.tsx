@@ -3,6 +3,9 @@
 import { useState, type CSSProperties } from "react";
 import { SALIVA_TEST_TESTIMONIALS, type SalivaTestTestimonial } from "@/lib/salivaTestTestimonials";
 
+const sansJp =
+  '"Hiragino Kaku Gothic Pro", "Hiragino Sans", "Yu Gothic", sans-serif';
+
 export function SalivaTestTestimonialSection() {
   return (
     <div style={styles.wrapper}>
@@ -26,7 +29,7 @@ function TestimonialCard({ testimonial }: { testimonial: SalivaTestTestimonial }
 
   return (
     <div style={styles.card}>
-      <p style={styles.concern}>主なお悩み：{testimonial.concern}</p>
+      <p style={styles.concern}>{testimonial.concern}</p>
       <p style={styles.excerpt}>「{testimonial.excerpt}」</p>
 
       {expanded && (
@@ -52,48 +55,57 @@ function TestimonialCard({ testimonial }: { testimonial: SalivaTestTestimonial }
 
 const styles: Record<string, CSSProperties> = {
   wrapper: {
-    marginTop: 32,
+    marginTop: 0,
   },
   kicker: {
+    fontFamily: sansJp,
     fontSize: 12,
-    letterSpacing: "0.14em",
+    letterSpacing: "0.2em",
     color: "#A08F7E",
-    marginBottom: 8,
+    marginBottom: 20,
     textAlign: "center",
   },
   heading: {
-    fontSize: 18,
+    fontFamily: "serif",
+    fontSize: 22,
+    fontWeight: 400,
     lineHeight: 1.6,
-    color: "#2C2A28",
-    marginBottom: 18,
+    color: "#2f2923",
+    marginBottom: 40,
     textAlign: "center",
   },
   stack: {
     display: "flex",
     flexDirection: "column",
-    gap: 14,
+    gap: 20,
   },
   card: {
-    padding: 20,
+    padding: 26,
     borderRadius: 18,
-    background: "#FFFFFF",
-    border: "1px solid rgba(198,169,107,0.22)",
+    background: "linear-gradient(165deg, #FFFFFF 0%, #FCFAF7 100%)",
+    border: "1px solid rgba(198,169,107,0.2)",
+    boxShadow: "0 1px 2px rgba(44,42,40,0.03), 0 18px 36px -26px rgba(44,42,40,0.16)",
   },
   concern: {
-    fontSize: 12,
+    fontFamily: sansJp,
+    fontSize: 11,
+    letterSpacing: "0.1em",
     color: "#C6A96B",
-    marginBottom: 10,
+    marginBottom: 14,
   },
   excerpt: {
-    fontSize: 14,
-    lineHeight: 1.9,
+    fontFamily: "serif",
+    fontSize: 15,
+    lineHeight: 2,
     color: "#2C2A28",
     fontStyle: "italic",
   },
   expanded: {
-    marginTop: 12,
+    marginTop: 14,
   },
   paragraph: {
+    fontFamily: sansJp,
+    fontWeight: 300,
     fontSize: 13,
     lineHeight: 1.9,
     color: "#5A534D",
@@ -101,17 +113,21 @@ const styles: Record<string, CSSProperties> = {
   },
   toggle: {
     display: "inline-block",
-    marginTop: 4,
+    marginTop: 8,
     background: "none",
     border: "none",
     padding: 0,
-    fontSize: 13,
+    fontFamily: sansJp,
+    fontSize: 12,
+    letterSpacing: "0.04em",
     color: "#8A7857",
     textDecoration: "underline",
     cursor: "pointer",
   },
   disclaimer: {
-    marginTop: 14,
+    marginTop: 20,
+    fontFamily: sansJp,
+    fontWeight: 300,
     fontSize: 11,
     lineHeight: 1.7,
     color: "#A08F7E",

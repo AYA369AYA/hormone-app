@@ -40,59 +40,73 @@ function positionPercent(value: number, min: number, max: number): number {
   return Math.min(100, Math.max(0, ratio * 100));
 }
 
-export function SampleTestResult({ imageSrc }: { imageSrc?: string }) {
-  if (imageSrc) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={imageSrc} alt="唾液女性ホルモン検査結果" style={styles.image} />;
-  }
-
+export function SampleTestResult({
+  imageSrc,
+  simplified,
+}: {
+  imageSrc?: string;
+  simplified?: boolean;
+}) {
   return (
     <div style={styles.wrapper}>
       <p style={styles.badge}>検査結果サンプル</p>
 
-      <p style={styles.intro}>
-        「基準範囲内かどうか」だけでなく、範囲のどこに位置しているか、
-        他の項目とのバランスはどうかを見ることが、レポートを読むうえで大切です。
-      </p>
+      {!simplified && (
+        <p style={styles.intro}>
+          「基準範囲内かどうか」だけでなく、範囲のどこに位置しているか、
+          他の項目とのバランスはどうかを見ることが、レポートを読むうえで大切です。
+        </p>
+      )}
 
-      {ITEMS.map((item) => (
-        <div key={item.name} style={styles.row}>
-          <div style={styles.rowHeader}>
-            <span style={styles.name}>{item.name}</span>
-            <span style={styles.value}>
-              {item.value}
-              {item.unit}
-            </span>
+      {imageSrc ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={imageSrc} alt="唾液女性ホルモン検査結果" style={styles.image} />
+      ) : (
+        ITEMS.map((item) => (
+          <div key={item.name} style={styles.row}>
+            <div style={styles.rowHeader}>
+              <span style={styles.name}>{item.name}</span>
+              <span style={styles.value}>
+                {item.value}
+                {item.unit}
+              </span>
+            </div>
+            <p style={styles.blurb}>{item.blurb}</p>
+            <div style={styles.track}>
+              <div
+                style={{
+                  ...styles.marker,
+                  left: `${positionPercent(item.value, item.min, item.max)}%`,
+                }}
+              />
+            </div>
+            <div style={styles.rangeLabels}>
+              <span>
+                {item.min}
+                {item.unit}
+              </span>
+              <span>基準範囲</span>
+              <span>
+                {item.max}
+                {item.unit}
+              </span>
+            </div>
           </div>
-          <p style={styles.blurb}>{item.blurb}</p>
-          <div style={styles.track}>
-            <div
-              style={{
-                ...styles.marker,
-                left: `${positionPercent(item.value, item.min, item.max)}%`,
-              }}
-            />
-          </div>
-          <div style={styles.rangeLabels}>
-            <span>
-              {item.min}
-              {item.unit}
-            </span>
-            <span>基準範囲</span>
-            <span>
-              {item.max}
-              {item.unit}
-            </span>
-          </div>
-        </div>
-      ))}
+        ))
+      )}
 
-      <p style={styles.note}>
-        数字だけを見ると、不安になる方もいらっしゃいます。でも大切なのは、この数字が
-        「今のあなたの状態」を教えてくれているということです。結果は専門医の解説と
-        あわせてご確認いただけます。
-      </p>
-      <p style={styles.disclaimer}>※サンプルです。実際の数値は個人ごとの検査結果に基づきます。</p>
+      {simplified ? (
+        null
+      ) : (
+        <>
+          <p style={styles.note}>
+            数字だけを見ると、不安になる方もいらっしゃいます。でも大切なのは、この数字が
+            「今のあなたの状態」を教えてくれているということです。結果は専門医の解説と
+            あわせてご確認いただけます。
+          </p>
+          <p style={styles.disclaimer}>※サンプルです。実際の数値は個人ごとの検査結果に基づきます。</p>
+        </>
+      )}
     </div>
   );
 }
@@ -100,15 +114,19 @@ export function SampleTestResult({ imageSrc }: { imageSrc?: string }) {
 const styles: Record<string, CSSProperties> = {
   wrapper: {
     marginTop: 16,
-    padding: 18,
-    borderRadius: 16,
-    background: "#FCFAF7",
+    padding: 20,
+    borderRadius: 18,
+    backgroundImage:
+      "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(198,169,107,0.12) 0%, transparent 65%), " +
+      "linear-gradient(165deg, #FEFDFB 0%, #FCFAF7 100%)",
     border: "1px solid rgba(198,169,107,0.2)",
+    boxShadow: "0 1px 2px rgba(44,42,40,0.03), 0 18px 36px -26px rgba(44,42,40,0.2)",
   },
   image: {
     width: "100%",
     borderRadius: 16,
     marginTop: 16,
+    boxShadow: "0 1px 2px rgba(44,42,40,0.04), 0 18px 36px -22px rgba(44,42,40,0.28)",
   },
   badge: {
     display: "inline-block",
@@ -176,7 +194,7 @@ const styles: Record<string, CSSProperties> = {
     marginTop: 12,
     padding: 14,
     borderRadius: 12,
-    background: "#F5EFE6",
+    background: "linear-gradient(165deg, #F8F1E6 0%, #F5EFE6 100%)",
     fontSize: 12,
     lineHeight: 1.8,
     color: "#5A534D",
