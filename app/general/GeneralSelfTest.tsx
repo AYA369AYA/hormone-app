@@ -239,7 +239,7 @@ export function GeneralSelfTest({
             marginBottom: "16px",
           }}
         >
-          今の身体の現在地を知ることが、回復への第一歩です。
+          今の身体を知ることから、あなたの『最高美』ははじまります。
         </p>
 
         <p
