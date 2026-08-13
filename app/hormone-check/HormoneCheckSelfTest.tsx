@@ -227,6 +227,10 @@ export function HormoneCheckSelfTest({
           </div>
 
           <div style={{ marginTop: 96 }}>
+            <GeneralGuidedExperienceCta source={source} variant="full" />
+          </div>
+
+          <div style={{ marginTop: 96 }}>
             <div style={styles.nextStepCard}>
               <p style={styles.eyebrow}>NEXT STEP</p>
               <p style={styles.nextStepBody}>
@@ -236,10 +240,6 @@ export function HormoneCheckSelfTest({
                 1分間のホルモンウェルネス体験を始める
               </a>
             </div>
-          </div>
-
-          <div style={{ marginTop: 96 }}>
-            <GeneralGuidedExperienceCta source={source} variant="full" />
           </div>
 
           <div style={{ marginTop: 96 }}>
